@@ -2,6 +2,7 @@ package com.inso.Ecomerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /*
  * Daniel Pastor Perez
  * Diego Santos Campo
