@@ -1,4 +1,4 @@
-package com.inso.Ecomerce;
+package com.inso.Ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Ivan Poncelas Vicente
  */
 @SpringBootApplication
-public class EcomerceApplication {
+public class EcommerceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EcomerceApplication.class, args);
+		SpringApplication.run(EcommerceApplication.class, args);
 	}
 }
