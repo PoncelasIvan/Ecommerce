@@ -7,6 +7,6 @@ public interface AdministratorService {
 	Administrator findByEmail(String email);
 
 	Administrator findByName(String name);
-
+	
 	Administrator save(Administrator admin);
 }

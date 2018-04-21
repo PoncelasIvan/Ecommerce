@@ -35,5 +35,6 @@ public class AdministratorServiceImpl implements AdministratorService{
 			return null;
 		}
 		return repository.save(admin);
-	}	
+	}
+	
 }
