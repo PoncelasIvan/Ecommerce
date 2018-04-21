@@ -109,9 +109,8 @@ public class AdministratorController {
 				
 				rAdmin.setName(admin.getName());
 			}
-			
 			if(admin.getPassword() != null && !admin.getPassword().isEmpty())
-				rAdmin.setPassword(admin.getPassword());
+				rAdmin.setPasswordHashed(admin.getPassword());
 			
 			service.save(rAdmin);
 			SessionManager.getInstance().setSessionEmail(request.getSession(), admin.getEmail());

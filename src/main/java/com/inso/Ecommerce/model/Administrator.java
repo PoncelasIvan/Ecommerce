@@ -77,6 +77,10 @@ public class Administrator {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;//DigestUtils.sha256Hex(password);
+		this.password = DigestUtils.sha256Hex(password);
+	}
+	
+	public void setPasswordHashed(String hash) {
+		this.password = hash;
 	}
 }
