@@ -10,6 +10,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class AdministratorController {
 	private AdministratorService service;
 	
 	@GetMapping("/")
-	public ResponseEntity<Object> getAdminDetails(HttpServletRequest request){
+	public ResponseEntity<Object> getAdministrator(HttpServletRequest request){
 		String aMail = SessionManager.getInstance().getSessionEmail(request.getSession());
 		if(aMail == null || aMail.isEmpty()) {
 			SessionManager.getInstance().delete(request.getSession());
@@ -43,9 +44,8 @@ public class AdministratorController {
 
 	}
 	
-	
-	@PostMapping("/create")
-	public ResponseEntity<Object> create(@Valid @RequestBody Administrator admin, HttpServletRequest request){
+	@PostMapping("/")
+	public ResponseEntity<Object> createAdministrator(@Valid @RequestBody Administrator admin, HttpServletRequest request){
 		if(admin.getEmail().isEmpty() || admin.getName().isEmpty() || admin.getPassword().isEmpty() || admin.getId() != null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
@@ -56,36 +56,8 @@ public class AdministratorController {
 		return new ResponseEntity<>(HttpStatus.CREATED);	
 	} 
 	
-	
-	@PostMapping("/login")
-	public ResponseEntity<Object> login(@Valid @RequestBody Administrator admin, HttpServletRequest request) {
-		Administrator rAdmin;
-		
-		if(admin.getEmail() != null)
-			 rAdmin = service.findByEmail(admin.getEmail());
-		else
-			rAdmin = service.findByName(admin.getName());
-		
-		if(rAdmin == null) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
-		
-		if(rAdmin.getPassword().equals(admin.getPassword())) {
-			SessionManager.getInstance().setSessionEmail(request.getSession(), rAdmin.getEmail());
-			return new ResponseEntity<>(HttpStatus.OK);
-		}else { 
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
-	}
-	
-	@DeleteMapping("/logout")
-	public ResponseEntity<Object> logout(HttpServletRequest request){
-		SessionManager.getInstance().delete(request.getSession());
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@PostMapping("/update")
-	public ResponseEntity<Object> update(@Valid @RequestBody Administrator admin, HttpServletRequest request) {	
+	@PutMapping("/")
+	public ResponseEntity<Object> updateAdministrator(@Valid @RequestBody Administrator admin, HttpServletRequest request) {	
 		Administrator rAdmin;
 		if((rAdmin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
 			SessionManager.getInstance().delete(request.getSession());
@@ -117,4 +89,30 @@ public class AdministratorController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}	
+	
+	@DeleteMapping("/")
+	public ResponseEntity<Object> deleteAdministrator(HttpServletRequest request){
+		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<Object> login(@Valid @RequestBody Administrator admin, HttpServletRequest request) {
+		Administrator rAdmin = admin.getEmail() != null ? service.findByEmail(admin.getEmail()) : service.findByName(admin.getName());
+
+		if(rAdmin == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
+		
+		if(rAdmin.getPassword().equals(admin.getPassword())) {
+			SessionManager.getInstance().setSessionEmail(request.getSession(), rAdmin.getEmail());
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
+	}
+	
+	@DeleteMapping("/logout")
+	public ResponseEntity<Object> logout(HttpServletRequest request){
+		SessionManager.getInstance().delete(request.getSession());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
 }

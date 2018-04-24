@@ -1,11 +1,16 @@
 package com.inso.Ecommerce.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -13,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 
 
 @JsonFilter(Administrator.FILTER)
-@Entity(name = "administrator")
-@Table(name = "ADMINISTRATOR")
+@Entity
 public class Administrator {
 	public static final String FILTER = "AdministratorFilter";
 	
@@ -29,11 +33,13 @@ public class Administrator {
 	@Column(unique = true, nullable = false)
 	private String email;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String password;
-	
+
+	@OneToMany(targetEntity = Product.class, mappedBy = "administrator", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Product> products;
+	 
 	public Administrator() {};
-	
 	
 	public Administrator(String name, String email) {
 		super();
@@ -82,5 +88,13 @@ public class Administrator {
 	
 	public void setPasswordHashed(String hash) {
 		this.password = hash;
+	}
+	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 }
