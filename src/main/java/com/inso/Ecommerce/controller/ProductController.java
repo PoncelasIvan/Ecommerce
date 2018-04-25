@@ -1,11 +1,17 @@
 package com.inso.Ecommerce.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -15,13 +21,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.inso.Ecommerce.model.Administrator;
+import com.inso.Ecommerce.model.Image;
 import com.inso.Ecommerce.model.Product;
 import com.inso.Ecommerce.service.AdministratorService;
+import com.inso.Ecommerce.service.ImageService;
 import com.inso.Ecommerce.service.ProductService;
 import com.inso.Ecommerce.utilities.SessionManager;
 
@@ -29,12 +39,17 @@ import com.inso.Ecommerce.utilities.SessionManager;
 @RequestMapping("/api/product")
 public class ProductController {
 
+	@Value("${resources.path}")
+	private String imagesPath;
+	
 	@Autowired
 	private ProductService service;
 	
 	@Autowired 
 	private AdministratorService aService;
 
+	@Autowired
+	private ImageService iService;
 	
 	@GetMapping("/")
 	public ResponseEntity<Object> getProducts(HttpServletRequest request){
@@ -72,10 +87,42 @@ public class ProductController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProduct(HttpServletRequest request){
+	public ResponseEntity<Object> deleteProduct(@PathVariable("id") int id, HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		
+		service.deleteById(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}	
 	
+	@PostMapping("/{id}/image")
+	public ResponseEntity<Object> uploadImage(@PathVariable("id") int id, @RequestParam("image") MultipartFile file, HttpServletRequest request){
+		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(admin == null)
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		try {
+			if(!file.isEmpty()) {
+	             BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+	             File destination = new File(imagesPath + DigestUtils.sha256Hex(admin.getEmail() + new Date().toString()) + ".png");
+	             ImageIO.write(src, "png", destination);
+	             Image img = new Image(destination.getPath(), service.findById(id));
+
+	             iService.save(img);
+			}else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/image/{imageId}")
+	public ResponseEntity<Object> deleteImage(@PathVariable("imageId") int imageId, HttpServletRequest request){
+		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(admin == null)
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
+		iService.deleteById(imageId);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
 }

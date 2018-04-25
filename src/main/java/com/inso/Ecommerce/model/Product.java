@@ -1,14 +1,18 @@
 package com.inso.Ecommerce.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
@@ -46,15 +50,10 @@ public class Product {
     @JoinColumn(name = "administratorId")
 	private Administrator administrator;
 	
-	public Product() {}
+	@OneToMany(targetEntity = Image.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Image> images;
 	
-	public Product(@NotNull String name, String description, @NotNull @Min(0) int price, @NotNull @Min(0) int stock) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.stock = stock;
-	}
+	public Product() {}
 
 	public Integer getId() {
 		return id;

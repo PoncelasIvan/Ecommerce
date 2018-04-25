@@ -7,7 +7,12 @@ import com.inso.Ecommerce.model.Product;
 
 public interface ProductService {
 	List<Product> findByAdministrator(Administrator administrator);
-	void save(Product product);
+	
+	Product save(Product product);
+	
 	List<Product> findAll();
-	public Product findById(Integer id);
+	
+	Product findById(Integer id);
+	
+	void deleteById(Integer id);
 }

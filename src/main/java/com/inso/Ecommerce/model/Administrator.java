@@ -41,19 +41,6 @@ public class Administrator {
 	 
 	public Administrator() {};
 	
-	public Administrator(String name, String email) {
-		super();
-		this.name = name;
-		this.email = email;
-	}
-	
-	public Administrator(String name, String email, String password) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
-	
 	public Integer getId() {
 		return id;
 	}

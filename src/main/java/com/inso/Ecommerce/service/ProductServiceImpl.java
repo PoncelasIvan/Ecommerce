@@ -22,13 +22,15 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public List<Product> findByAdministrator(Administrator administrator) {
+		if(administrator == null) return null;
 		Optional<Administrator> admin = administratorRepository.findById(administrator.getId());
 		return admin.isPresent() ? admin.get().getProducts() : null;
 	}
 
 	@Override
-	public void save(Product product) {
-		repository.save(product);
+	public Product save(Product product) {
+		if(product == null) return null;
+		return repository.save(product);
 	}
 
 	@Override
@@ -39,6 +41,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public Product findById(Integer id) {
 		Optional<Product> aux = repository.findById(id);
-		return (aux.isPresent()) ? aux.get() : null;
+		return aux.isPresent() ? aux.get() : null;
+	}
+
+	@Override
+	public void deleteById(Integer id) {
+		repository.deleteById(id);
 	}
 }

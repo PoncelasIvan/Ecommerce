@@ -8,6 +8,8 @@ import com.inso.Ecommerce.model.Administrator;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer>{
+	
 	public Administrator findByEmail(String email);
+	
 	public Administrator findByName(String name);
 }

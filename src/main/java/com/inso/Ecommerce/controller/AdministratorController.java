@@ -31,17 +31,12 @@ public class AdministratorController {
 	
 	@GetMapping("/")
 	public ResponseEntity<Object> getAdministrator(HttpServletRequest request){
-		String aMail = SessionManager.getInstance().getSessionEmail(request.getSession());
-		if(aMail == null || aMail.isEmpty()) {
-			SessionManager.getInstance().delete(request.getSession());
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
-		}else if(service.findByEmail(aMail) != null){
-			MappingJacksonValue mappedAdmin = new MappingJacksonValue(service.findByEmail(aMail));
-			mappedAdmin.setFilters(new SimpleFilterProvider().addFilter(Administrator.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("email", "name")));
-			return new ResponseEntity<>(mappedAdmin, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
+		Administrator admin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(admin == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
+			
+		MappingJacksonValue mappedAdmin = new MappingJacksonValue(admin);
+		mappedAdmin.setFilters(new SimpleFilterProvider().addFilter(Administrator.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("email", "name")));
+		return new ResponseEntity<>(mappedAdmin, HttpStatus.OK);
 	}
 	
 	@PostMapping("/")
