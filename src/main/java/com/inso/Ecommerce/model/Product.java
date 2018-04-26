@@ -53,6 +53,9 @@ public class Product {
 	@OneToMany(targetEntity = Image.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Image> images;
 	
+	@OneToMany(targetEntity = ProductSell.class, mappedBy = "product", fetch = FetchType.EAGER)
+	private List<Sell> sells;
+	
 	public Product() {}
 
 	public Integer getId() {
