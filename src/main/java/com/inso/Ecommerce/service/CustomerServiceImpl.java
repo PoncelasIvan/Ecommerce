@@ -1,5 +1,8 @@
 package com.inso.Ecommerce.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,26 +18,34 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Override
 	public Customer findByEmail(String email) {
-		if (StringUtils.isEmpty(email)) {
-			return null;
-		}
-		return repository.findByEmail(email);
+		return StringUtils.isEmpty(email) ? null : repository.findByEmail(email);
 	}
 
 	@Override
 	public Customer findByName(String name) {
-		if (StringUtils.isEmpty(name)) {
-			return null;
-		}
-		return repository.findByName(name);
+		return StringUtils.isEmpty(name) ? null : repository.findByName(name);
 	}
 
 	@Override
 	public Customer save(Customer cust) {
-		if (cust == null) {
-			return null;
-		}
-		return repository.save(cust);
+		return cust == null ? null : repository.save(cust);
+	}
+
+	@Override
+	public void delete(Customer cust) {
+		if(cust != null) repository.delete(cust);
+	}
+
+	@Override
+	public List<Customer> findAll() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Customer findById(Integer id) {
+		if(id == null) return null;
+		Optional<Customer> oc = repository.findById(id);
+		return oc.isPresent() ? oc.get() : null;
 	}
 	
 }

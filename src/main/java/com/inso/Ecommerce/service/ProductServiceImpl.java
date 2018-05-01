@@ -29,8 +29,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Product save(Product product) {
-		if(product == null) return null;
-		return repository.save(product);
+		return product == null ? null : repository.save(product);
 	}
 
 	@Override

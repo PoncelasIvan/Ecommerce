@@ -13,10 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.codec.digest.DigestUtils;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 
@@ -27,8 +25,10 @@ public class Sell {
 	
 	public static final String FILTER = "SellFilter";
 	
-	private static enum State{
-			RECEIVED, IN_PROGRESS, COMPLETED
+	public static enum State {
+			RECEIVED, 
+			IN_PROGRESS, 
+			COMPLETED
 	};
 
 	@Id
@@ -37,7 +37,7 @@ public class Sell {
 	private Integer id;
 
 	@NotNull
-	private int state;
+	private State state;
 
 	@NotNull 
 	private Date date;
@@ -51,6 +51,14 @@ public class Sell {
 	
 	public Sell() {}
 
+	public Sell(@NotNull State state, @NotNull Date date, Customer customer) {
+		super();
+		this.state = state;
+		this.date = date;
+		this.customer = customer;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -59,11 +67,11 @@ public class Sell {
 		this.id = id;
 	}
 
-	public int getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 
@@ -81,7 +89,7 @@ public class Sell {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	};
+	}
 
 	
 }

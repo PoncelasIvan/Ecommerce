@@ -51,6 +51,12 @@ public class ProductController {
 	@Autowired
 	private ImageService iService;
 	
+	/**
+	 * If the current user is a customer or in not logged returns all products
+	 * If the current user is an administrator returns only the administrator products
+	 * @param request HTTP current request HTTP current request
+	 * @return all || own products
+	 */
 	@GetMapping("/")
 	public ResponseEntity<Object> getProducts(HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
@@ -59,24 +65,34 @@ public class ProductController {
 			MappingJacksonValue mappedProducts = new MappingJacksonValue(administrator.getProducts());
 			mappedProducts.setFilters(filter);
 			return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
-		}
-		
+		}	
 		MappingJacksonValue mappedProducts = new MappingJacksonValue(service.findAll());
 		mappedProducts.setFilters(filter);
 		return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
 	}
 	
+	/**
+	 * Creates a new product
+	 * @param product Product to create
+	 * @param request HTTP current request
+	 * @return HTTP 201 if all was okey
+	 */
 	@PostMapping("/")
 	public ResponseEntity<Object> create(@Valid @RequestBody Product product, HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
+		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);	
 		product.setDate(new Date());
 		product.setAdministrator(administrator);
 		service.save(product);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
+	/**
+	 * Return all data from a product
+	 * @param id Id of a products
+	 * @param request HTTP current request
+	 * @return product data
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getDetails(@PathVariable("id") int id, HttpServletRequest request){
 		Product prod = service.findById(id);
@@ -86,43 +102,57 @@ public class ProductController {
 		return new ResponseEntity<>(mappedProduct, HttpStatus.OK);
 	}
 	
+	/**
+	 * Delete a product
+	 * @param id Id of a product
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteProduct(@PathVariable("id") int id, HttpServletRequest request){
+	public ResponseEntity<Object> deleteProduct(@PathVariable("id") Integer id, HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
 		service.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}	
 	
+	/**
+	 * Uploads and asociates an image for a product
+	 * @param id Id of product
+	 * @param file image 
+	 * @param request HTTP current request
+	 * @return HTTP 201 if all was okey
+	 */
 	@PostMapping("/{id}/image")
-	public ResponseEntity<Object> uploadImage(@PathVariable("id") int id, @RequestParam("image") MultipartFile file, HttpServletRequest request){
+	public ResponseEntity<Object> uploadImage(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file, HttpServletRequest request){
 		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(admin == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		if(admin == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		try {
 			if(!file.isEmpty()) {
 	             BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
 	             File destination = new File(imagesPath + DigestUtils.sha256Hex(admin.getEmail() + new Date().toString()) + ".png");
 	             ImageIO.write(src, "png", destination);
 	             Image img = new Image(destination.getPath(), service.findById(id));
-
 	             iService.save(img);
 			}else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
+	/**
+	 * Delete an image of a product
+	 * @param imageId Id of a image
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
 	@DeleteMapping("/image/{imageId}")
-	public ResponseEntity<Object> deleteImage(@PathVariable("imageId") int imageId, HttpServletRequest request){
+	public ResponseEntity<Object> deleteImage(@PathVariable("imageId") Integer imageId, HttpServletRequest request){
 		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(admin == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
+		if(admin == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		iService.deleteById(imageId);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
+		return new ResponseEntity<>(HttpStatus.OK);	
 	}
 }

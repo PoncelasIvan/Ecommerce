@@ -1,5 +1,9 @@
 package com.inso.Ecommerce.service;
 
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,26 +19,34 @@ public class AdministratorServiceImpl implements AdministratorService{
 	
 	@Override
 	public Administrator findByEmail(String email) {
-		if (StringUtils.isEmpty(email)) {
-			return null;
-		}
-		return repository.findByEmail(email);
+		return StringUtils.isEmpty(email) ? null : repository.findByEmail(email);
 	}
 
 	@Override
 	public Administrator findByName(String name) {
-		if (StringUtils.isEmpty(name)) {
-			return null;
-		}
-		return repository.findByName(name);
+		return StringUtils.isEmpty(name) ? null : repository.findByName(name);
 	}
 
 	@Override
 	public Administrator save(Administrator admin) {
-		if (admin == null) {
-			return null;
-		}
-		return repository.save(admin);
+		return admin == null ? null : repository.save(admin);
+	}
+
+	@Override
+	public void delete(Administrator admin) {
+		if(admin != null) repository.delete(admin);
+	}
+
+	@Override
+	public List<Administrator> findAll() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Administrator findById(Integer id) {
+		if(id == null) return null;
+		Optional<Administrator> admin = repository.findById(id);
+		return admin.isPresent() ? admin.get() : null;
 	}
 	
 }

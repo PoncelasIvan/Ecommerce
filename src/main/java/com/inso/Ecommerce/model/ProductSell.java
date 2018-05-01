@@ -36,6 +36,17 @@ public class ProductSell {
     @JoinColumn(name = "SellId")
 	private Sell sell;
 
+	public ProductSell() {}
+	
+	
+	public ProductSell(@NotNull Integer cuantity, Product product, Sell sell) {
+		super();
+		this.cuantity = cuantity;
+		this.product = product;
+		this.sell = sell;
+	}
+
+
 	public int getCuantity() {
 		return cuantity;
 	}

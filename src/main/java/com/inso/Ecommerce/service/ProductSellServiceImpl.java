@@ -18,27 +18,21 @@ public class ProductSellServiceImpl implements ProductSellService{
 
 	@Override
 	public List<Product> findBySell(Sell sell) {
-		if(sell == null) return null;
-		return repository.findBySell(sell);
+		return sell == null ? null : repository.findBySell(sell);
 	}
 
 	@Override
 	public List<Sell> findByProduct(Product product) {
-		if(product == null) return null;
-		return repository.findByProduct(product);
+		return product == null ? null : repository.findByProduct(product);
 	}
 
 	@Override
 	public void save(ProductSell productSell) {
-		if(productSell == null)return;
-		repository.save(productSell);
-		
+		if(productSell != null) repository.save(productSell);
 	}
 
 	@Override
 	public void delete(ProductSell productSell) {
-		if(productSell == null)return;
-		repository.delete(productSell);		
+		if(productSell != null) repository.delete(productSell);		
 	}
-	
 }

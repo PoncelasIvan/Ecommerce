@@ -29,29 +29,43 @@ public class CustomerController {
 	@Autowired
 	private CustomerService service;
 	
+	/**
+	 * Return the data of the current customer
+	 * @param request HTTP current request
+	 * @return data of the current customer
+	 */
 	@GetMapping("/")
 	public ResponseEntity<Object> getCustomer(HttpServletRequest request){
-		Customer cust= service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(cust == null) 
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
+		Customer cust = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(cust == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
 		
 		MappingJacksonValue mappedCust = new MappingJacksonValue(cust);
 		mappedCust.setFilters(new SimpleFilterProvider().addFilter(Customer.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("email", "name")));
 		return new ResponseEntity<>(mappedCust, HttpStatus.OK);
 	}
 	
+	/**
+	 * Create a new customer
+	 * @param cust Customer to create
+	 * @param request HTTP current request
+	 * @return HTTP 201 if all was okey
+	 */
 	@PostMapping("/")
 	public ResponseEntity<Object> createCustomer(@Valid @RequestBody Customer cust, HttpServletRequest request){
 		if(cust.getEmail().isEmpty() || cust.getName().isEmpty() || cust.getPassword().isEmpty() || cust.getId() != null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
 		if(service.findByEmail(cust.getEmail()) != null || service.findByName(cust.getName()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT); 	
-		
 		service.save(cust);
 		return new ResponseEntity<>(HttpStatus.CREATED);	
 	} 
 	
+	/**
+	 * Update the data of the current customer
+	 * @param cust Customer with the new data
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
 	@PutMapping("/")
 	public ResponseEntity<Object> updateCustomer(@Valid @RequestBody Customer cust, HttpServletRequest request) {	
 		Customer rCust;
@@ -64,49 +78,54 @@ public class CustomerController {
 				aux = service.findByEmail(cust.getEmail());
 				if(aux != null && (aux.getId() != rCust.getId()))
 					return new ResponseEntity<>(HttpStatus.CONFLICT);
-				
 				rCust.setEmail(cust.getEmail());
 			}
-			
-			aux = null;
-			
 			if(cust.getName() != null && !(cust.getName().isEmpty())) {
 				aux = service.findByName(cust.getName());
 				if(aux != null && (aux.getId() != rCust.getId()))
-					return new ResponseEntity<>(HttpStatus.CONFLICT);
-				
+					return new ResponseEntity<>(HttpStatus.CONFLICT);	
 				rCust.setName(cust.getName());
 			}
-			
-			if(cust.getPassword() != null && !(cust.getPassword().isEmpty()))
-				rCust.setPasswordHashed(cust.getPassword());
-			
-			
+			if(cust.getPassword() != null && !(cust.getPassword().isEmpty())) rCust.setPasswordHashed(cust.getPassword());
 			service.save(rCust);
 			SessionManager.getInstance().setSessionEmail(request.getSession(), cust.getEmail());
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}	
 	
+	/**
+	 * Delete the current customer
+	 * @param request HTTP current request
+	 * @return HTTP 200
+	 */
 	@DeleteMapping("/")
 	public ResponseEntity<Object> deleteCustomer(HttpServletRequest request){
-		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		Customer cust = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		service.delete(cust);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	/**
+	 * Login for customers
+	 * @param cust Customer with data to login
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was OKEY
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@Valid @RequestBody Customer cust, HttpServletRequest request) {
 		Customer rCust = cust.getEmail() != null ? service.findByEmail(cust.getEmail()) : service.findByName(cust.getName());
-
 		if(rCust == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
-		
 		if(rCust.getPassword().equals(cust.getPassword())) {
 			SessionManager.getInstance().setSessionEmail(request.getSession(), rCust.getEmail());
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
+		} else return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 	
+	/**
+	 * Logout
+	 * @param request HTTP current request
+	 * @return HTTP 200
+	 */
 	@DeleteMapping("/logout")
 	public ResponseEntity<Object> logout(HttpServletRequest request){
 		SessionManager.getInstance().delete(request.getSession());

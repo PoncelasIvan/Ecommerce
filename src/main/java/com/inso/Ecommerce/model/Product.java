@@ -50,7 +50,7 @@ public class Product {
     @JoinColumn(name = "administratorId")
 	private Administrator administrator;
 	
-	@OneToMany(targetEntity = Image.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Image.class, mappedBy = "product", cascade = CascadeType.ALL)
 	private List<Image> images;
 	
 	@OneToMany(targetEntity = ProductSell.class, mappedBy = "product", fetch = FetchType.EAGER)

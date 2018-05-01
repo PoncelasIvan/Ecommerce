@@ -1,6 +1,7 @@
 package com.inso.Ecommerce.controller;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,6 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.inso.Ecommerce.beans.ProductSellBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
-import com.inso.Ecommerce.model.Product;
 import com.inso.Ecommerce.model.ProductSell;
 import com.inso.Ecommerce.model.Sell;
 import com.inso.Ecommerce.service.AdministratorService;
@@ -53,7 +53,12 @@ public class SellController {
 	@Autowired
 	SellService service;
 	
-	
+	/**
+	 * If the user is an administrator returns all sells
+	 * If the user is a customer returns his own sells
+	 * @param request HTTP current request HTTP current request
+	 * @return all || own sells
+	 */
 	@GetMapping("/")
 	public ResponseEntity<Object> getSells(HttpServletRequest request){
 		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
@@ -62,8 +67,7 @@ public class SellController {
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
 			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state")));
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
-		}
-		
+		}	
 		Customer customer = cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(customer != null){
 			List<Sell> sells = customer.getSells(); 
@@ -71,60 +75,57 @@ public class SellController {
 			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state")));
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}
-		
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 	
+	/**
+	 * Create a new sell
+	 * @param products Product data
+	 * @param request HTTP current request
+	 * @return HTTP 201 if all was okey
+	 */
 	@PostMapping("/")
-	public ResponseEntity<Object> create(@Valid @RequestBody List<ProductSellBean> products,@Valid @RequestBody Sell sell, HttpServletRequest request){
+	public ResponseEntity<Object> create(@Valid @RequestBody List<ProductSellBean> products, HttpServletRequest request){
 		Customer cust= cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(cust == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		sell.setCustomer(cust);
-
-		Date date = new Date();
-		sell.setDate(date);
-		sell.setState(0);
+		if(cust == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		Sell sell = new Sell(Sell.State.RECEIVED, new Date(), cust);
 		service.save(sell);
-		
-		for(int x = 0; x < products.size(); x++){
-			ProductSell prosel = new ProductSell();
-			int productId = products.get(x).getProductId();
-			int cantidad = products.get(x).getCantidad();
-			Product product = pService.findById(productId);
-			
-			prosel.setCuantity(cantidad);
-			prosel.setProduct(product);
-			prosel.setSell(sell);
-			psService.save(prosel);
+		Iterator<ProductSellBean> it = products.iterator();
+		while(it.hasNext()) {
+			ProductSellBean aux = it.next();
+			psService.save(new ProductSell(aux.getCantidad(), pService.findById(aux.getProductId()), sell));
 		}
-		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
+	/**
+	 * Update the data of a sell
+	 * @param sell Data of current sell
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
 	@PutMapping("/")
 	public ResponseEntity<Object> update(@Valid @RequestBody Sell sell, HttpServletRequest request){
 		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(admin == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
+		if(admin == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		Sell rSell = service.findById(sell.getId());
-		if(rSell.getState() == sell.getState())
-			return new ResponseEntity<>(HttpStatus.OK);
+		if(rSell.getState() == sell.getState()) return new ResponseEntity<>(HttpStatus.OK);
 		rSell.setState(sell.getState());
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	/**
+	 * Delete a sell
+	 * @param sell 
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
 	@DeleteMapping("/")
 	public ResponseEntity<Object> delete(@Valid @RequestBody Sell sell, HttpServletRequest request){
 		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		if(admin == null)
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		
+		if(admin == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		Sell rSell = service.findById(sell.getId());
 		service.delete(rSell);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
+		return new ResponseEntity<>(HttpStatus.OK);	
 	}
-	
 }

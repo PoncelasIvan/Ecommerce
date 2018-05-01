@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 @Entity
 public class Administrator {
 	public static final String FILTER = "AdministratorFilter";
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, scale = 0)
@@ -40,6 +40,13 @@ public class Administrator {
 	private List<Product> products;
 	 
 	public Administrator() {};
+	
+	public Administrator(String email, String name, @NotNull String password) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
 	
 	public Integer getId() {
 		return id;
