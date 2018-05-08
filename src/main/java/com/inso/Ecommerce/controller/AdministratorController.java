@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.inso.Ecommerce.beans.LoginBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
 import com.inso.Ecommerce.service.AdministratorService;
@@ -221,8 +222,9 @@ public class AdministratorController {
 	 * @return HTTP 200 if all was okey
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@Valid @RequestBody Administrator admin, HttpServletRequest request) {
-		Administrator rAdmin = (admin.getEmail() != null) ? service.findByEmail(admin.getEmail()) : service.findByName(admin.getName());
+	public ResponseEntity<Object> login(@Valid @RequestBody LoginBean admin, HttpServletRequest request) {
+		Administrator rAdmin = service.findByEmail(admin.getUser());
+		if(rAdmin == null) rAdmin = service.findByName(admin.getUser());
 		if(rAdmin == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 		
 		if(rAdmin.getPassword().equals(admin.getPassword())) {

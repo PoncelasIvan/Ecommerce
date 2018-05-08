@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.inso.Ecommerce.beans.LoginBean;
 import com.inso.Ecommerce.model.Customer;
 import com.inso.Ecommerce.service.CustomerService;
 import com.inso.Ecommerce.utilities.SessionManager;
@@ -112,8 +113,9 @@ public class CustomerController {
 	 * @return HTTP 200 if all was OKEY
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@Valid @RequestBody Customer cust, HttpServletRequest request) {
-		Customer rCust = cust.getEmail() != null ? service.findByEmail(cust.getEmail()) : service.findByName(cust.getName());
+	public ResponseEntity<Object> login(@Valid @RequestBody LoginBean cust, HttpServletRequest request) {
+		Customer rCust = service.findByEmail(cust.getUser());
+		if(rCust == null) rCust = service.findByName(cust.getUser());
 		if(rCust == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 		if(rCust.getPassword().equals(cust.getPassword())) {
 			SessionManager.getInstance().setSessionEmail(request.getSession(), rCust.getEmail());
