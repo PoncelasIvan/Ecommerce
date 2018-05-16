@@ -31,9 +31,13 @@ public class Product {
 	private Integer id;
 	
 	@NotNull
-	private String name;
+	private String title;
 	
-	private String description;
+	private String author;
+	
+	private String synopsis;
+	
+	private String format;
 	
 	@NotNull
 	@Min(0)
@@ -66,22 +70,6 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public int getPrice() {
 		return price;
 	}
@@ -112,5 +100,37 @@ public class Product {
 
 	public void setAdministrator(Administrator administrator) {
 		this.administrator = administrator;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getSynopsis() {
+		return synopsis;
+	}
+
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 }
