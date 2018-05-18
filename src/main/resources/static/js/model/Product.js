@@ -56,9 +56,15 @@ class ProductDescriptionView {
     
     render(){
         let btnBuy = '';
+        let btnFav = '';
         if($.cookie('ROLE') == 'CUSTOMER'){
             btnBuy = '<button type="button" class="btn btn-lg btn-outline-success animated bounce infinite" title="Comprar">Comprar</button>';
-            if(!this.product.stock > 0) btnBuy = '<button type="button" class="btn btn-lg  btn-outline-danger" title="El producto esta agotado" disabled>Producto agotado</button>';
+            btnFav = '<button type="button" class="btn btn-outline-warning  animated shake infinite" style="margin-left: 10px;" title="Añadir al carrito"><i class="far fa-star"></i> Añadir al carrito</button>'
+
+            if(!this.product.stock > 0) {
+                btnBuy = '<button type="button" class="btn btn-lg  btn-outline-danger" title="El producto esta agotado" disabled>Producto agotado</button>';
+                btnFav = '';
+            }
         }
            
         return `
@@ -117,6 +123,9 @@ class ProductDescriptionView {
                         <h4>` + this.product.price + ` &euro;</h4>
                     </div>
                 </div>
-            </div>` + btnBuy;
+            </div>
+            <div>
+            ` + btnBuy + btnFav + `  
+            </div>`;
     }
 }
