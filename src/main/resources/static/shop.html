@@ -1,1 +1,71 @@
-Esto es una tienda xd
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+		<link rel="stylesheet" href="PaperKit/assets/css/paper-kit.css">
+		<link rel="stylesheet" href="css/shop.css">
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha384-ch1nZWLCNJ31V+4aC8U2svT7i40Ru+O8WHeLF4Mvq4aS7VD5ciODxwuOCdkIsX86" crossorigin="anonymous"></script>
+		<script src="PaperKit/assets/js/paper-kit.js"></script>
+		<script src="PaperKit/assets/js/bootstrap-switch.min.js"></script>
+		<script src="js/util/API.js"></script>
+		<script src="js/shop.js"></script>
+		<script src="js/model/product.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-md fixed-top">
+        	<div class="container">
+        		
+            	<div class="navbar-translate">
+            		<h5 class="navbar-brand">Tienda</h5>
+                	<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#nTog" aria-expanded="false" aria-label="Toggle navigation">
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                	</button>                	
+            	</div>
+            	<div class="collapse navbar-collapse" id="nTog">
+	                <ul class="navbar-nav ml-auto"></ul>
+            	</div>
+        	</div>
+    	</nav>
+    	
+    	<!-- All products section -->
+    	<div class="wrapper" id="products">
+    		<section class="container-fluid" style="padding-top : 150px;">
+	    		<div class="row"></div>
+    		</section>
+    	</div>
+    	
+    	<!-- Detailed product section -->
+		<div class="wrapper" id="product">
+    		<section class="container-fluid" style="padding-top : 100px;">
+    			<header>
+    				<button type="button" class="btn btn-outline-info btn-just-icon" title="Atras" data-target="#products"><i class="fas fa-arrow-left"></i></button>
+    			</header>
+    			<section>
+    			</section>
+    		</section>
+    	</div> 	
+    	
+    	<div class="wrapper" id="administrator">
+    		<section class="container-fluid" style="padding-top : 150px;">
+	    		Administartor
+    		</section>
+    	</div>
+    	
+    	<div class="wrapper" id="customer">
+    		<section class="container-fluid" style="padding-top : 150px;">
+	    		Customer
+    		</section>
+    	</div>
+    	
+    	
+	</body>
+</html>

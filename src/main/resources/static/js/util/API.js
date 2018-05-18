@@ -91,7 +91,7 @@ var API = {
         },
         PRODUCT_DETAILS : {
         	type : 'GET',
-        	url : '/api/product/{id}/'
+        	url : '/api/product/'
         },
         PRODUCT_DELETE : {
         	type : 'DELETE',

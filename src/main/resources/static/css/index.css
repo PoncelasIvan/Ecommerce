@@ -1,3 +1,4 @@
+/*
  * Comun
  */
 header{
@@ -9,7 +10,7 @@ header{
 }
 
 .moving-clouds {
-	background-image: url('/MaterialKit/assets/img/clouds.png');
+	background-image: url('/PaperKit/assets/img/clouds.png');
 }
 
 section .form-group {

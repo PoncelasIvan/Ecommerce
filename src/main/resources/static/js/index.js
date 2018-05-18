@@ -1,43 +1,44 @@
 $(document).ready(function(){
 	
-   if($.cookie('ROLE') == 'ADMINISTRATOR'){
-       // It says that is an administrator, we are going to check it
-       $.ajax({
-           type: API.ADMIN_CHECK.type,
-           url: API.ADMIN_CHECK.url,
-           complete: function(jqXHR, textStatus) {
-               switch (jqXHR.status) {
-                   case 200:
-                       // Thats true
-                       $(location).attr('href', 'admin.html');
-                       break;
-                   default:
-                       // Thats false
-                       $.removeCookie('ROLE');
-               }
-           }
-       });
+   let whoami = $.cookie('ROLE');
+   switch(whoami){
+        case 'CUSTOMER' :
+            // It says that is an user, we are going to check it
+            $.ajax({
+                type: API.USER_CHECK.type,
+                url: API.USER_CHECK.url,
+                complete: function(jqXHR, textStatus) {
+                    switch (jqXHR.status) {
+                        case 200:
+                            // Thats true
+                            $(location).attr('href', 'shop.html');
+                            break;
+                        default:
+                            // Thats false
+                            $.removeCookie('ROLE');
+                    }
+                }
+            });
+            break;
+        case 'ADMINISTRATOR' :
+            // It says that is an administrator, we are going to check it
+            $.ajax({
+                type: API.ADMIN_CHECK.type,
+                url: API.ADMIN_CHECK.url,
+                complete: function(jqXHR, textStatus) {
+                    switch (jqXHR.status) {
+                        case 200:
+                            // Thats true
+                            $(location).attr('href', 'admin.html');
+                            break;
+                        default:
+                            // Thats false
+                            $.removeCookie('ROLE');
+                    }
+                }
+            });
+            break;
    }
-   
-   if($.cookie('ROLE') == 'CUSTOMER'){
-       // It says that is an user, we are going to check it
-       $.ajax({
-           type: API.USER_CHECK.type,
-           url: API.USER_CHECK.url,
-           complete: function(jqXHR, textStatus) {
-               switch (jqXHR.status) {
-                   case 200:
-                       // Thats true
-                       $(location).attr('href', 'shop.html');
-                       break;
-                   default:
-                       // Thats false
-                       $.removeCookie('ROLE');
-               }
-           }
-       });
-   }
-   
        
    // Smooth scrolling
    $('[data-scroll-to]').click(function(event){
