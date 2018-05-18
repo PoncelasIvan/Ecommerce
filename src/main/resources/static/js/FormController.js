@@ -3,7 +3,7 @@ var FORMCODES = {
         SUCCESS : 1
 };
 /*
- * This clases can be used for show and clean
+ * This class can be used for show and clean
  * error/success messages from a form
  */
 class FormController {
@@ -22,8 +22,7 @@ class FormController {
         input.parent().addClass("has-"+type);
         input.addClass('form-control-'+type);
         input.parent().append('<div class="form-control-feedback">' + msg + '</div>');
-    
-        
+   
     }
     
     static clean(input) {

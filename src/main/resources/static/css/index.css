@@ -1,4 +1,3 @@
-/*
  * Comun
  */
 header{
@@ -19,7 +18,7 @@ section .form-group {
 /*
  * loginSection
  */
-section#loginSection {
+section#loginSection{
 	text-align : center;
 	padding-top: 50px;
 	padding-bottom: 50px;

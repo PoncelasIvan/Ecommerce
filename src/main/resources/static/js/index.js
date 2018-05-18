@@ -1,6 +1,7 @@
 $(document).ready(function(){
+	
    if($.cookie('ROLE') == 'ADMINISTRATOR'){
-       // He say that is an administrator, we are going to check it
+       // It says that is an administrator, we are going to check it
        $.ajax({
            type: API.ADMIN_CHECK.type,
            url: API.ADMIN_CHECK.url,
@@ -19,7 +20,7 @@ $(document).ready(function(){
    }
    
    if($.cookie('ROLE') == 'CUSTOMER'){
-       // He say that is an user, we are going to check it
+       // It says that is an user, we are going to check it
        $.ajax({
            type: API.USER_CHECK.type,
            url: API.USER_CHECK.url,

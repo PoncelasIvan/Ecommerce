@@ -1,1 +1,134 @@
-Esto es la pantalla de administrador
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+		<link rel="stylesheet" href="MaterialKit/assets/css/paper-kit.css">
+		<link rel="stylesheet" href="css/admin.css">
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha384-ch1nZWLCNJ31V+4aC8U2svT7i40Ru+O8WHeLF4Mvq4aS7VD5ciODxwuOCdkIsX86" crossorigin="anonymous"></script>
+		<script src="MaterialKit/assets/js/paper-kit.js"></script>
+		<script src="MaterialKit/assets/js/bootstrap-switch.min.js"></script>
+		<script src="js/FormController.js"></script>
+		<script src="js/API.js"></script>
+		<script src="js/admin.js"></script>
+	</head>
+	<body>
+	
+		<nav class="navbar navbar-expand-md fixed-top navbar-primary" >
+			<div class="container">
+				<div class="collapse navbar-collapse" id="nTog">
+	                <ul class="navbar-nav ml-auto">
+	                    <li class="nav-item"><button type="button" class="btn btn-outline-info btn-lg" id="products" data-scroll-to="#productsSection">Ver productos  <i class="far fa-clipboard"></i></button>
+						<li class="nav-item"><button type="button" class="btn btn-outline-success btn-lg" id="newProduct" data-scroll-to="#newProductSection">Nuevo Producto  <i class="far fa-plus-square"></i></button>				                   
+	                    <li class="nav-item"><button type="button" class="btn btn-outline-danger btn-lg" id="customers" data-scroll-to="#customerSection">Ver usuarios</button>			
+	                </ul>
+            	</div>
+				 			
+				 
+				 
+			</div>
+		</nav>
+		
+		<div class="wrapper">
+			<header class="page-header section-dark">
+	            <div class="filter"></div>
+	    		<div class="content-center">
+	    			<div class="container">
+	    				<div class="title-brand">
+	    					<h2 class="presentation-title">Pagina principal</h2>
+	    				</div>
+	    			</div>
+	    		</div>
+	    	</header>
+	    	
+	    	<section id="productsSection">
+	    		<h2>Lista de productos</h2>
+	    		<div>
+		    	<table id="productsTable" class="table table-bordered table-dark table-hover table-responsive">
+			    	<thead class="thead-dark">
+			    		<tr>
+			    			<th scope="col">#</th>
+			    			<th scope="col">ID</th>
+			    			<th scope="col">Titulo</th>
+			    			<th scope="col">Autor</th>
+			    			<th scope="col">Sinopsis</th>
+			    			<th scope="col">Formato</th>
+			    			<th scope="col">Precio</th>
+			    			<th scope="col">Cantidad en Stock</th>			    			
+			    		</tr>
+		    		</thead>
+		    		<tbody>
+		    		</tbody> 
+		    	</table>
+		    	</div>
+	    	</section>
+	    	<section id="newProductSection">
+	    		<h2>A&ntilde;adir Producto</h2>
+	    		<div>
+	    			<form id="newProductForm">
+	    			<div class="form-group">
+	    				<span class="label label-success">Id</span>
+						<input type="text" class="form-control" placeholder="ID">
+					</div>
+					<div class="form-group">
+	    				<span class="label label-success">Titulo</span>
+						<input type="text" class="form-control" placeholder="Titulo">
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Autor</span>
+						<input type="text" class="form-control" placeholder="Autor">
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Sinopsis</span>
+						<textarea class="form-control" placeholder="Descripcion">Introduzca sinopsis</textarea>
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Formato</span>
+						<select class="form-control" id="formatSelect"> 
+							<option>Tapa dura</option>
+							<option>Tapa blanda</option>
+							<option>Edicion de bolsillo</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Precio</span>
+						<input type="text" class="form-control" placeholder="Precio">
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Imagen del producto</span>
+						<input type="file" class="form-control-file" placeholder=Image"></input>
+					</div>
+					<button type="button" class="btn btn-danger btn-round btn-lg">A&ntilde;adir</button>
+	    		</form>
+	    		</div>
+	    		
+	    	</section>
+	    	
+	    	<section id="customerSection">
+	    		
+	    		<h2>Lista de usuarios registrados</h2>
+	    		<div>
+		    	<table id="customerTable" class="table table-bordered table-dark table-hover table-responsive">
+			    	<thead class="thead-dark">
+			    		<tr>
+			    			<th scope="col">#</th>
+			    			<th scope="col">ID</th>
+			    			<th scope="col">Nombre</th>
+			    			<th scope="col">Email</th>
+			    			<th scope="col">Operaciones</th>
+			    			<th scope="col">Eliminar usuario</th>			    			
+			    		</tr>
+		    		</thead>
+		    		<tbody>
+		    		</tbody> 
+		    	</table>
+		    	</div>
+	    	</section>
+		</div>
+		
+	</body>
+</html>
