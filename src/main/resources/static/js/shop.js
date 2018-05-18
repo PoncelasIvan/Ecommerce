@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    let whoami = 'ADMINISTRATOR';//$.cookie('ROLE');
+    $.cookie('ROLE', 'CUSTOMER');
+    let whoami = $.cookie('ROLE');
   
     switch(whoami){
         case 'CUSTOMER' :
@@ -29,10 +30,17 @@ $(document).ready(function(){
         }
     });  
     
-    // Logout
-    $('body').on('click', '[data-action="logout"]', function(){
-        $.removeCookie('ROLE');
-        $(location).attr('href', 'index.html');
+    // Actions
+    $('body').on('click', '[data-action]', function(){
+        switch($(this).attr('data-action')){
+            case 'logout':
+                $.removeCookie('ROLE');
+                $(location).attr('href', 'index.html');
+                break;
+            case 'buy':
+                alert("COmprando");
+                break;
+        }
     });
     
     // Changes mains screens
