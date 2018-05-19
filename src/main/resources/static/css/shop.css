@@ -8,3 +8,7 @@
 #customer, #administrator, #product {
 	display : none;
 }
+
+#request .tab-content {
+	margin-top: 40px;
+}

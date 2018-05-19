@@ -68,9 +68,32 @@
 				</div>
 				<!-- Tab panes -->
 				<div class="tab-content text-center">
-				    <div class="tab-pane active" id="request" role="tabpanel">
-						Pedidos
+				    <div class="container tab-pane active" id="request" role="tabpanel">
+						<ul class="nav nav-pills nav-pills-info" style="justify-content: center;">
+						    <li class="nav-item">
+						        <a class="nav-link active" data-toggle="tab" href="#req-wait">Pendientes</a>
+						    </li>
+						    <li class="nav-item">
+						        <a class="nav-link" data-toggle="tab" href="#req-incoming">En proceso</a>
+						    </li>
+						    <li class="nav-item">
+						        <a class="nav-link" data-toggle="tab" href="#req-done">Completados</a>
+						    </li>
+						</ul>
+						<!-- Pill panes -->
+						<div class="tab-content">
+						    <div class="tab-pane active" id="req-wait" role="tabpanel">
+						    	 pendientes 
+						    </div>
+						    <div class="tab-pane" id="req-incoming" role="tabpanel">
+						    	en proceso
+						    </div>
+						    <div class="tab-pane" id="req-done" role="tabpanel">
+						    	completados
+						    </div>
+						</div>
 				    </div>
+				    
 				    <div class="tab-pane" id="adminDash" role="tabpanel">
 				    	Administracion crear admin y mis datos
 				    </div>

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $.cookie('ROLE', 'ADMINISTRATOR');
+    //$.cookie('ROLE', 'ADMINISTRATOR');
     //$.cookie('ROLE', 'CUSTOMER');
     let whoami = $.cookie('ROLE');
   
@@ -11,7 +11,9 @@ $(document).ready(function(){
         case 'ADMINISTRATOR' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#administrator">Área administrador</button>');
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-danger btn-just-icon" data-action="logout" title="Cerrar sesión" ><i class="fas fa-sign-out-alt"></i></button>');
-            break;             
+            break;  
+        default:
+            $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" onclick="$(location).attr(\'href\', \'index.html\');"><i class="fas fa-sign-in-alt"></i>Entrar</button>');            
     }
     $.ajax({
         type: API.PRODUCT_GET.type,
