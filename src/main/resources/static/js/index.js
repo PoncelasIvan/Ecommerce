@@ -29,7 +29,7 @@ $(document).ready(function(){
                     switch (jqXHR.status) {
                         case 200:
                             // Thats true
-                            $(location).attr('href', 'admin.html');
+                            $(location).attr('href', 'shop.html');
                             break;
                         default:
                             // Thats false
@@ -102,7 +102,7 @@ $(document).ready(function(){
                                    switch (jqXHR.status) {
                                        case 200:
                                            $.cookie('ROLE', 'ADMINISTRATOR');
-                                           $(location).attr('href', 'admin.html');
+                                           $(location).attr('href', 'shop.html');
                                            break;
                                        case 401:
                                            // Password incorrect

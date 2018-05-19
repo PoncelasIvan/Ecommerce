@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    $.cookie('ROLE', 'CUSTOMER');
+    $.cookie('ROLE', 'ADMINISTRATOR');
+    //$.cookie('ROLE', 'CUSTOMER');
     let whoami = $.cookie('ROLE');
   
     switch(whoami){
@@ -38,7 +39,10 @@ $(document).ready(function(){
                 $(location).attr('href', 'index.html');
                 break;
             case 'buy':
-                alert("COmprando");
+                alert("Comprando");
+                break;
+            case 'favourite':
+                alert("Favorito");
                 break;
         }
     });
@@ -48,6 +52,7 @@ $(document).ready(function(){
         $('.wrapper').hide();
         $($(this).attr('data-target')).show();
         switch($(this).attr('data-target')){
+            // Open all products section
             case '#products':
                 if($('nav [data-target="#products"]').length > 0) $('nav [data-target="#products"]').remove();
                 if($('.navbar-brand').length == 0) $('.navbar-translate').append('<h5 class="navbar-brand">Tienda</h5>');       
@@ -71,6 +76,7 @@ $(document).ready(function(){
                     }
                 });
                 break;
+                
             case '#product' :
                 let id  = ($(this).attr('data-product-id') && $(this).attr('data-product-id') != "") ? $(this).attr('data-product-id') : 1;
                 $.ajax({
@@ -81,23 +87,32 @@ $(document).ready(function(){
                         switch (jqXHR.status) {
                             case 200:
                                 let product = new ProductDescription(json);
+                                
+                                $('.navbar-translate').prepend('<button type="button" class="btn btn-outline-info btn-just-icon" title="Atras" data-target="#products"><i class="fas fa-arrow-left"></i></button>');
                                 $('.navbar-brand').text(product.title);
                                 let dash = $('#product section section');
                                 dash.children().remove();
                                 dash.append(product.view());
-                                break;
-                            default:      
+                                break;    
                         }
                     }
                 });
                 break;
+                
             case '#administrator':
                 if($('.navbar-brand').length > 0) $('.navbar-brand').remove();
-                if($('nav [data-target="#products"]').length == 0) $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
+                if($('.navbar-translate button').length > 0) $('.navbar-translate button').remove();
+                $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
+                
+                
                 break;
+                
+                
             case '#customer':
                 if($('.navbar-brand').length > 0) $('.navbar-brand').remove();
-                if($('nav [data-target="#products"]').length == 0) $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
+                if($('.navbar-translate button').length > 0) $('.navbar-translate button').remove();
+                $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
+               
                 break;                
         }
     });    

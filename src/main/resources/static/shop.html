@@ -47,25 +47,68 @@
     	<!-- Detailed product section -->
 		<div class="wrapper" id="product">
     		<section class="container-fluid" style="padding-top : 100px;">
-    			<header>
-    				<button type="button" class="btn btn-outline-info btn-just-icon" title="Atras" data-target="#products"><i class="fas fa-arrow-left"></i></button>
-    			</header>
     			<section class="text-center"></section>
     		</section>
     	</div> 	
     	
+    	<!-- Administrator section -->
     	<div class="wrapper" id="administrator">
     		<section class="container-fluid" style="padding-top : 150px;">
-	    		Administrator
+	    		<div class="nav-tabs-navigation">
+    				<div class="nav-tabs-wrapper">
+				        <ul class="nav nav-tabs" role="tablist">
+				            <li class="nav-item">
+				                <a class="nav-link active" data-toggle="tab" href="#request" role="tab">Pedidos</a>
+				            </li>
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#adminDash" role="tab">Administracion</a>
+				            </li>
+        				</ul>
+				    </div>
+				</div>
+				<!-- Tab panes -->
+				<div class="tab-content text-center">
+				    <div class="tab-pane active" id="request" role="tabpanel">
+						Pedidos
+				    </div>
+				    <div class="tab-pane" id="adminDash" role="tabpanel">
+				    	Administracion crear admin y mis datos
+				    </div>
+				</div>
     		</section>
     	</div>
     	
+    	<!-- Customer section -->
     	<div class="wrapper" id="customer">
     		<section class="container-fluid" style="padding-top : 150px;">
-	    		Customer
+	    		<div class="nav-tabs-navigation">
+    				<div class="nav-tabs-wrapper">
+				        <ul class="nav nav-tabs" role="tablist">
+				            <li class="nav-item">
+				                <a class="nav-link active" data-toggle="tab" href="#history" role="tab">Historial de compras</a>
+				            </li>
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#sCart" role="tab">Carrito de la compra</a>
+				            </li>
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Perfil</a>
+				            </li>
+        				</ul>
+				    </div>
+				</div>
+				<!-- Tab panes -->
+				<div class="tab-content text-center">
+				    <div class="tab-pane active" id="history" role="tabpanel">
+						Productos comprados
+				    </div>
+				    <div class="tab-pane" id="sCart" role="tabpanel">
+				    	Carrito de la compra
+				    </div>
+				    <div class="tab-pane" id="profile" role="tabpanel">
+				    	Mis datos
+				    </div>
+				</div>
     		</section>
-    	</div>
-    	
-    	
+    	</div>  	
 	</body>
 </html>

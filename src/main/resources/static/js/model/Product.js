@@ -19,8 +19,8 @@ class ProductView {
     
     render(){
         return `
-            <div class="col-sm">
-                 <div class="card text-center animated bounceInLeft" style="width: 17rem; margin-left:auto;margin-right:auto;display:block;" data-target="#product" data-product-id="` + this.product.id + `">
+            <div class="col-sm animated bounceInLeft">
+                 <div class="card text-center" style="width: 17rem; margin-left:auto;margin-right:auto;display:block;" data-target="#product" data-product-id="` + this.product.id + `">
                      <img class="card-img-top" src="images/book.jpg" alt="` + this.product.title + `">
                      <div class="card-body">
                          <h5 class="card-title">` + this.product.title + `</h5>
@@ -57,15 +57,22 @@ class ProductDescriptionView {
     render(){
         let btnBuy = '';
         let btnFav = '';
-        if($.cookie('ROLE') == 'CUSTOMER'){
-            btnBuy = '<button type="button" class="btn btn-lg btn-outline-success animated bounce infinite" title="Comprar">Comprar</button>';
-            btnFav = '<button type="button" class="btn btn-outline-warning  animated shake infinite" style="margin-left: 10px;" title="Añadir al carrito"><i class="far fa-star"></i> Añadir al carrito</button>'
+        let btnEdit = '';
+        switch($.cookie('ROLE')){
+        case 'CUSTOMER' :
+            btnBuy = '<button type="button" class="btn btn-lg btn-outline-success animated bounce infinite" title="Comprar" data-action="buy">Comprar</button>';
+            btnFav = '<button type="button" class="btn btn-outline-warning  animated shake infinite" style="margin-left: 10px;" title="Añadir al carrito" data-action="favourite"><i class="far fa-star"></i> Añadir al carrito</button>'
 
             if(!this.product.stock > 0) {
                 btnBuy = '<button type="button" class="btn btn-lg  btn-outline-danger" title="El producto esta agotado" disabled>Producto agotado</button>';
                 btnFav = '';
             }
+            break;
+        case 'ADMINISTRATOR':
+            btnEdit = '<button type="button" class="btn btn-lg  btn-outline-success" title="Guardar cambios">Guardar</button>';
+            break;
         }
+        
            
         return `
             <h1 class="animated bounceInLeft">` + this.product.title + `</h1>
@@ -125,7 +132,7 @@ class ProductDescriptionView {
                 </div>
             </div>
             <div>
-            ` + btnBuy + btnFav + `  
+            ` + btnBuy + btnFav + btnEdit + `  
             </div>`;
     }
 }
