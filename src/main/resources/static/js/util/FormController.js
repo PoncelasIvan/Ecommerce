@@ -22,7 +22,6 @@ class FormController {
         input.parent().addClass("has-"+type);
         input.addClass('form-control-'+type);
         input.parent().append('<div class="form-control-feedback">' + msg + '</div>');
-   
     }
     
     static clean(input) {

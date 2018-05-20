@@ -1,7 +1,7 @@
 $(document).ready(function(){
     //$.cookie('ROLE', 'ADMINISTRATOR');
     //$.cookie('ROLE', 'CUSTOMER');
-    let whoami = $.cookie('ROLE');
+    var whoami = $.cookie('ROLE');
   
     switch(whoami){
         case 'CUSTOMER' :
@@ -14,8 +14,23 @@ $(document).ready(function(){
                     let json = jQuery.parseJSON(jqXHR.responseText);
                     switch (jqXHR.status) {
                         case 200:
+                            console.log(json);
+                            console.log($($('#customer-profile-edit-data p')[0]));
                            $($('#customer-profile-edit-data p')[0]).text(json.name);
                            $($('#customer-profile-edit-data p')[1]).text(json.email);
+                            break;    
+                    }
+                }
+            });
+            $.ajax({
+                type: API.SELL_GET.type,
+                url: API.SELL_GET.url,
+                complete: function(jqXHR, textStatus) {
+                    let json = jQuery.parseJSON(jqXHR.responseText);
+                    switch (jqXHR.status) {
+                        case 200:
+                            console.log(json);
+                           
                             break;    
                     }
                 }
@@ -49,10 +64,23 @@ $(document).ready(function(){
     
     // Actions
     $('body').on('click', '[data-action]', function(){
+        let data;
         switch($(this).attr('data-action')){
             case 'logout':
                 $.removeCookie('ROLE');
                 $(location).attr('href', 'index.html');
+                break;
+            case 'customer-change-data':
+                data= $(this).parent().find('p');
+                let name = $(data[0]).text();
+                let email = $(data[1]).text();
+                
+                break;
+            case 'customer-change-password':
+                data = $(this).parent().find('input');
+                let oPass = $(data[0]).val();
+                let nPass = $(data[1]).val();
+                
                 break;
             case 'buy':
                 alert("Comprando");
@@ -94,6 +122,7 @@ $(document).ready(function(){
             case '#product' :
                 $('.wrapper').hide();
                 let id  = ($(this).attr('data-product-id') && $(this).attr('data-product-id') != "") ? $(this).attr('data-product-id') : 1;
+                var back = $(this).attr('data-back');
                 $.ajax({
                     type: API.PRODUCT_DETAILS.type,
                     url: API.PRODUCT_DETAILS.url + id,
@@ -103,7 +132,7 @@ $(document).ready(function(){
                             case 200:
                                 let product = new ProductDescription(json);
                                 
-                                $('.navbar-translate').prepend('<button type="button" class="btn btn-outline-info btn-just-icon" title="Atras" data-target="#products"><i class="fas fa-arrow-left"></i></button>');
+                                $('.navbar-translate').prepend('<button type="button" class="btn btn-outline-info btn-just-icon" title="Atras" data-target="' + back + '"><i class="fas fa-arrow-left"></i></button>');
                                 $('.navbar-brand').text(product.title);
                                 let dash = $('#product section section');
                                 dash.children().remove();
@@ -112,6 +141,8 @@ $(document).ready(function(){
                         }
                     }
                 });
+                
+                
                 break;
                 
             case '#administrator':
@@ -122,6 +153,26 @@ $(document).ready(function(){
                 break;    
                 
             case '#customer':
+                for(let i = 0; i <30; i++)
+                    $('#customer-history ul').append(new Sell(i).view());
+               
+                $.ajax({
+                    type: API.PRODUCT_GET.type,
+                    url: API.PRODUCT_GET.url,
+                    complete: function(jqXHR, textStatus) {
+                        let json = jQuery.parseJSON(jqXHR.responseText);
+                        switch (jqXHR.status) {
+                            case 200:
+                                if(!json) return;  
+                                let dash = $('#customer-sCart .row');
+                                for(let i in json) dash.append(new Product(json[i]).view());
+                                break;
+                                
+                            default:
+                              
+                        }
+                    }
+                });  
                 $('.wrapper').hide();
                 if($('.navbar-brand').length > 0) $('.navbar-brand').remove();
                 if($('.navbar-translate button').length > 0) $('.navbar-translate button').remove();

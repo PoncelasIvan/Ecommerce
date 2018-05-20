@@ -18,6 +18,7 @@
 		<script src="js/util/API.js"></script>
 		<script src="js/shop.js"></script>
 		<script src="js/model/Product.js"></script>
+		<script src="js/model/Sell.js"></script>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-md fixed-top">
@@ -121,12 +122,10 @@
 				</div>
 				<div class="tab-content text-center">
 				    <div class="tab-pane active" id="customer-history" role="tabpanel">
-						<div class="row"></div>
+						<ul class="list-group list-group-flush"></ul>
 				    </div>
 				    <div class="tab-pane" id="customer-sCart" role="tabpanel">
-				    	<div class="row">
-				    		
-				    	</div>
+				    	<div class="row"></div>
 				    </div>
 				    <div class="tab-pane" id="customer-profile" role="tabpanel">
 				    	<div class="container">
@@ -146,7 +145,7 @@
 				            					<span class="label label-success">Nombre de usuario</span>
 				            				</div>
 				            				<div class="col-sm">
-				            					<p contenteditable="true">s</p>
+				            					<p contenteditable="true"></p>
 				            				</div>
 				            			</div>
 				            			<div class="row">			
@@ -154,10 +153,10 @@
 				            					<span class="label label-success">email</span>
 				            				</div>
 				            				<div class="col-sm">
-				            					<p contenteditable="true">p</p>
+				            					<p contenteditable="true"></p>
 				            				</div>
 				            			</div>
-				            			<button type="button" class="btn btn-danger btn-round btn-lg">Editar</button>
+				            			<button type="button" class="btn btn-danger btn-round btn-lg" data-action="customer-change-data">Actualizar</button>
 				            		</div>
 				            		
 				            		<div class="container" id="customer-profile-edit-password">	            			
@@ -170,7 +169,7 @@
 							    				<span class="label label-success">Nueva contraseña</span>
 												<input type="password" class="form-control" placeholder="Nueva contraseña">
 											</div>
-											<button type="button" class="btn btn-info btn-round btn-lg">Entrar</button>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="customer-change-password">Actualizar</button>
 							    		</form>
 				            		</div>
 	    						</div>

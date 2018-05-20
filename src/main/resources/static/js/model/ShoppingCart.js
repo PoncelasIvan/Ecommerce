@@ -12,4 +12,18 @@ class ShoppingCart {
             if(products[i].id == id) this.products.splice(i, 1);
         }
     }
+    
+    view(){
+        return new ShoppingCartView(this).render();
+    }
+}
+
+class ShoppingCartView {
+    constructor(shoppingCart){
+        this.shoppingCart = shoppingCart;
+    }
+    
+    render(){
+        return ``;
+    }
 }

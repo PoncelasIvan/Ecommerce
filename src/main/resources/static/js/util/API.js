@@ -1,5 +1,5 @@
 /*
- * In this file we are goin to define all API calls 
+ * In this file we are going to define all API calls 
  * for use in all web
  */  
 var API = {
@@ -122,6 +122,5 @@ var API = {
         SELL_DELETE : {
         	type : 'DELETE',
         	url : '/api/sell/'
-        }
-        
+        }    
 };
