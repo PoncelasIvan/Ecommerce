@@ -1,5 +1,6 @@
 package com.inso.Ecommerce.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -83,12 +84,28 @@ public class Sell {
 		this.date = date;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public String getCustomer() {
+		return customer.getName();
 	}
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+	
+	public List<List<String>> getProducts(){
+		List<List<String>> prod = new ArrayList<List<String>>();
+		for(int i = 0; i < products.size(); i++){
+			List<String> aux = new ArrayList<String>();
+
+			aux.add(""+products.get(i).getProduct().getId());
+			aux.add(products.get(i).getProduct().getTitle());
+			aux.add(""+products.get(i).getProduct().getPrice());
+
+			aux.add(""+products.get(i).getCuantity());
+
+			prod.add(aux);
+		}
+		return prod;
 	}
 
 	

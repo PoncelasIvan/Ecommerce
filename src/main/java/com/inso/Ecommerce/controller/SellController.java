@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.inso.Ecommerce.beans.ProductSellBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
+import com.inso.Ecommerce.model.Product;
 import com.inso.Ecommerce.model.ProductSell;
 import com.inso.Ecommerce.model.Sell;
 import com.inso.Ecommerce.service.AdministratorService;
@@ -65,14 +66,18 @@ public class SellController {
 		if(admin != null){
 			List<Sell> sells = service.findAll();
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state", "products")));
+			/*mappedSells.setFilters(new SimpleFilterProvider().addFilter(ProductSell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("product", "cuantity")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "img")));
+*/
+
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}	
 		Customer customer = cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(customer != null){
 			List<Sell> sells = customer.getSells(); 
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state", "products")));
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
