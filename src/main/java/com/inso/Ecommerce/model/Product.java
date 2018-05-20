@@ -133,4 +133,19 @@ public class Product {
 	public void setFormat(String format) {
 		this.format = format;
 	}
+	
+	public String getImg(){
+		Image easy = images.get(0);
+		if(easy != null)
+			return easy.getUrl();
+		return "";
+	}
+	
+	public String getImgs(){
+		String urls = "";
+		for(int i=0;i<images.size();i++){
+			urls = urls + images.get(i).getUrl() + " ";
+		}
+		return urls;
+	}
 }

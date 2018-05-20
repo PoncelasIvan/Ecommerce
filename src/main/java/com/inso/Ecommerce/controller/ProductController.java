@@ -60,7 +60,7 @@ public class ProductController {
 	@GetMapping("/")
 	public ResponseEntity<Object> getProducts(HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		SimpleFilterProvider filter = new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "images", "author", "price"));
+		SimpleFilterProvider filter = new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "price", "img"));
 		if(administrator != null) {
 			MappingJacksonValue mappedProducts = new MappingJacksonValue(administrator.getProducts());
 			mappedProducts.setFilters(filter);
@@ -97,10 +97,18 @@ public class ProductController {
 	public ResponseEntity<Object> getDetails(@PathVariable("id") int id, HttpServletRequest request){
 		Product prod = service.findById(id);
 		if(prod == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
 		MappingJacksonValue mappedProduct = new MappingJacksonValue(service.findById(id));
-		mappedProduct.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "synopsis", "format", "price", "stock")));
+		
+		mappedProduct.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "synopsis", "format", "price", "stock", "imgs")));
 		return new ResponseEntity<>(mappedProduct, HttpStatus.OK);
 	}
+	
+	/**
+	 * Get a image from a product
+	 * @param id = Id o a product
+	 * return 
+	 */
 	
 	/**
 	 * Delete a product
