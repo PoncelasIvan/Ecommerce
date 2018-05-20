@@ -135,9 +135,10 @@ public class Product {
 	}
 	
 	public String getImg(){
-		Image easy = images.get(0);
-		if(easy != null)
+		if(!(images.isEmpty())){
+			Image easy = images.get(0);
 			return easy.getUrl();
+			}
 		return "";
 	}
 	
