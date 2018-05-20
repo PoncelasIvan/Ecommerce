@@ -5,10 +5,42 @@
 .wrapper {
 	padding-bottom : 40px;
 }
+
+.wrapper section.container-fluid{
+	padding-top: 130px;
+}
+
 #customer, #administrator, #product {
 	display : none;
 }
 
 #request .tab-content {
 	margin-top: 40px;
+}
+
+[data-target] {
+	cursor: pointer;
+}
+
+#customer-profile .fixed-section ul {
+	list-style : none;
+}
+#customer-profile-edit-password {
+	display: none;	
+}
+
+#customer-profile-edit-password button, #customer-profile-edit-data button{
+	margin-top: 40px;
+}
+
+#customer-profile-edit-password .row, #customer-profile-edit-data .row {
+	padding: 10px;
+}
+
+#customer-profile-edit-password .row div:first-child, #customer-profile-edit-data .row div:first-child{
+	text-align: right;
+}
+
+#customer-profile-edit-password .row div:last-child, #customer-profile-edit-data .row div:last-child{
+	text-align: left;
 }

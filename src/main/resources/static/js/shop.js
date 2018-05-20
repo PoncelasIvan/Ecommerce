@@ -7,6 +7,19 @@ $(document).ready(function(){
         case 'CUSTOMER' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#customer">Área personal</button>');
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-danger btn-just-icon" data-action="logout" title="Cerrar sesión" ><i class="fas fa-sign-out-alt"></i></button>');
+            $.ajax({
+                type: API.USER_CHECK.type,
+                url: API.USER_CHECK.url,
+                complete: function(jqXHR, textStatus) {
+                    let json = jQuery.parseJSON(jqXHR.responseText);
+                    switch (jqXHR.status) {
+                        case 200:
+                           $($('#customer-profile-edit-data p')[0]).text(json.name);
+                           $($('#customer-profile-edit-data p')[1]).text(json.email);
+                            break;    
+                    }
+                }
+            });
             break;
         case 'ADMINISTRATOR' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#administrator">Área administrador</button>');
@@ -15,6 +28,7 @@ $(document).ready(function(){
         default:
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" onclick="$(location).attr(\'href\', \'index.html\');"><i class="fas fa-sign-in-alt"></i>Entrar</button>');            
     }
+    
     $.ajax({
         type: API.PRODUCT_GET.type,
         url: API.PRODUCT_GET.url,
@@ -49,13 +63,11 @@ $(document).ready(function(){
         }
     });
     
-    // Changes mains screens
+    // Change screens
     $('body').on('click', '[data-target]', function(){
-        $('.wrapper').hide();
-        $($(this).attr('data-target')).show();
         switch($(this).attr('data-target')){
-            // Open all products section
             case '#products':
+                $('.wrapper').hide();
                 if($('nav [data-target="#products"]').length > 0) $('nav [data-target="#products"]').remove();
                 if($('.navbar-brand').length == 0) $('.navbar-translate').append('<h5 class="navbar-brand">Tienda</h5>');       
                 $('.navbar-brand').text('Tienda');
@@ -80,6 +92,7 @@ $(document).ready(function(){
                 break;
                 
             case '#product' :
+                $('.wrapper').hide();
                 let id  = ($(this).attr('data-product-id') && $(this).attr('data-product-id') != "") ? $(this).attr('data-product-id') : 1;
                 $.ajax({
                     type: API.PRODUCT_DETAILS.type,
@@ -102,20 +115,40 @@ $(document).ready(function(){
                 break;
                 
             case '#administrator':
+                $('.wrapper').hide();
                 if($('.navbar-brand').length > 0) $('.navbar-brand').remove();
                 if($('.navbar-translate button').length > 0) $('.navbar-translate button').remove();
                 $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
-                
-                
-                break;
-                
+                break;    
                 
             case '#customer':
+                $('.wrapper').hide();
                 if($('.navbar-brand').length > 0) $('.navbar-brand').remove();
                 if($('.navbar-translate button').length > 0) $('.navbar-translate button').remove();
                 $('.navbar-translate').append('<button type="button" class="btn btn-outline-success btn-lg" data-target="#products">Tienda <i class="fas fa-shopping-cart"></i></button>');
-               
-                break;                
+                break; 
+                
+            case '#customer-profile-edit-data':
+                $.ajax({
+                    type: API.USER_CHECK.type,
+                    url: API.USER_CHECK.url,
+                    complete: function(jqXHR, textStatus) {
+                        let json = jQuery.parseJSON(jqXHR.responseText);
+                        switch (jqXHR.status) {
+                            case 200:
+                                console.log(json);
+                                break;    
+                        }
+                    }
+                });
+                $('#customer-profile-edit-password').hide();
+                break;
+                
+            case '#customer-profile-edit-password':
+                $('#customer-profile-edit-data').hide();
+                break;
         }
-    });    
+        $($(this).attr('data-target')).show();
+    }); 
+    
 });
