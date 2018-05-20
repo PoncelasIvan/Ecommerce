@@ -19,6 +19,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @JsonFilter(Product.FILTER)
 @Entity
@@ -134,19 +137,25 @@ public class Product {
 		this.format = format;
 	}
 	
-	public String getImg(){
+	public ObjectNode getImg(){
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode img = mapper.createObjectNode();
 		if(!(images.isEmpty())){
-			Image easy = images.get(0);
-			return easy.getUrl();
+			img.put("url", images.get(0).getUrl());
 			}
-		return "";
+		return img;
 	}
 	
-	public String getImgs(){
-		String urls = "";
+	public ArrayNode getImgs(){
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode imgs = mapper.createArrayNode();
 		for(int i=0;i<images.size();i++){
-			urls = urls + images.get(i).getUrl() + " ";
+			ObjectNode aux = mapper.createObjectNode();
+			aux.put("id", images.get(i).getId());
+			aux.put("url", images.get(i).getUrl());
+			
+			imgs.add(aux);
 		}
-		return urls;
+		return imgs;
 	}
 }

@@ -51,4 +51,8 @@ public class Image {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
+	public int getId(){
+		return this.id;
+	}
 }

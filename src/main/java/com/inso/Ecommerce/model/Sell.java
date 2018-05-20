@@ -16,8 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 @JsonFilter(Sell.FILTER)  
@@ -92,7 +94,7 @@ public class Sell {
 		this.customer = customer;
 	}
 	
-	public List<List<String>> getProducts(){
+	/*public List<List<String>> getProducts(){
 		List<List<String>> prod = new ArrayList<List<String>>();
 		for(int i = 0; i < products.size(); i++){
 			List<String> aux = new ArrayList<String>();
@@ -106,7 +108,23 @@ public class Sell {
 			prod.add(aux);
 		}
 		return prod;
-	}
+	}*/
+	
+	public ArrayNode getProducts(){
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode prod = mapper.createArrayNode();
+		
+		for(int i = 0; i < products.size(); i++){
+			ObjectNode aux = mapper.createObjectNode();
+			
+			aux.put("id", products.get(i).getProduct().getId());
+			aux.put("title", products.get(i).getProduct().getTitle());
+			aux.put("price", products.get(i).getProduct().getPrice());
+			aux.put("cuantity", products.get(i).getCuantity());
 
+			prod.add(aux);
+		}
+		return prod;
+	}
 	
 }
