@@ -105,6 +105,10 @@ var API = {
         	type : 'DELETE',
         	url : '/api/product/image/{imageId}/'
         },
+        PRODUCT_SEARCH : {
+        	type : 'POST',
+        	url : '/api/product/search/'
+        },
         
         //Sells(to be done)
         SELL_GET : {

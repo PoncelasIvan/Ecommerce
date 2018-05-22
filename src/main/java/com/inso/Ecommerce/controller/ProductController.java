@@ -54,7 +54,7 @@ public class ProductController {
 	/**
 	 * If the current user is a customer or in not logged returns all products
 	 * If the current user is an administrator returns only the administrator products
-	 * @param request HTTP current request HTTP current request
+	 * @param request HTTP current request
 	 * @return all || own products
 	 */
 	@GetMapping("/")
@@ -68,6 +68,21 @@ public class ProductController {
 		}	
 		MappingJacksonValue mappedProducts = new MappingJacksonValue(service.findAll());
 		mappedProducts.setFilters(filter);
+		return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
+	}
+	
+	/*
+	 * Find a product in function of his name and author
+	 * @param pattern String for the search
+	 * @param request HTTP
+	 * @return products
+	 */
+	@PostMapping("/search")
+	public ResponseEntity<Object> findProducts(@Valid String search, HttpServletRequest request){
+		if(search == "")
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		MappingJacksonValue mappedProducts = new MappingJacksonValue(service.search(search));
+		mappedProducts.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "price", "imgs")));
 		return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
 	}
 	
@@ -104,11 +119,6 @@ public class ProductController {
 		return new ResponseEntity<>(mappedProduct, HttpStatus.OK);
 	}
 	
-	/**
-	 * Get a image from a product
-	 * @param id = Id o a product
-	 * return 
-	 */
 	
 	/**
 	 * Delete a product
