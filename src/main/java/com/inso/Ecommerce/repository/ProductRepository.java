@@ -13,6 +13,6 @@ import com.inso.Ecommerce.model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>{
-	@Query("SELECT p FROM Product p WHERE p.title LIKE %:search% OR p.author LIKE %:search% ")
+	@Query("SELECT p FROM Product p WHERE UPPER(p.title) LIKE CONCAT('%',CONCAT(UPPER(:search),'%')) OR UPPER(p.author) LIKE CONCAT('%',CONCAT(UPPER(:search),'%')) ")
 	List<Product> search(@Param("search") String search);
 }
