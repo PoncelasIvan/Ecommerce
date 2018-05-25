@@ -21,6 +21,10 @@ var API = {
         	type : 'PUT',
         	url : '/api/customer/'
         },
+        USER_CHANGE_PASS : {
+            type : 'PUT',
+            url : '/api/customer/password/'
+        },
         USER_REGISTER : {
         	type : 'POST',
         	url : '/api/customer/'

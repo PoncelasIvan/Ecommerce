@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.inso.Ecommerce.beans.ProductSellBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
-import com.inso.Ecommerce.model.Product;
 import com.inso.Ecommerce.model.ProductSell;
 import com.inso.Ecommerce.model.Sell;
 import com.inso.Ecommerce.service.AdministratorService;

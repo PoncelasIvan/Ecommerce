@@ -29,12 +29,17 @@ $(document).ready(function(){
                     let json = jQuery.parseJSON(jqXHR.responseText);
                     switch (jqXHR.status) {
                         case 200:
-                            console.log(json);
-                           
-                            break;    
+                            if(!json) return;  
+                            console.log("json", json);
+                            $('#customer-history ul').children().remove();
+                            for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
+                            break;
+                            
+                        default:
+                          
                     }
                 }
-            });
+            });  
             break;
         case 'ADMINISTRATOR' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#administrator">Área administrador</button>');
@@ -66,21 +71,60 @@ $(document).ready(function(){
     $('body').on('click', '[data-action]', function(){
         let data;
         switch($(this).attr('data-action')){
+            /**
+             * Common actions
+             */
             case 'logout':
                 $.removeCookie('ROLE');
                 $(location).attr('href', 'index.html');
                 break;
+                
+            /**
+             * Customer actions
+             */
             case 'customer-change-data':
                 data= $(this).parent().find('p');
                 let name = $(data[0]).text();
                 let email = $(data[1]).text();
-                
+                $.ajax({
+                    type: API.USER_UPDATE.type,
+                    url: API.USER_UPDATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'name' : name,
+                        'email' : email
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                alert("Datos cambiados");
+                                break;    
+                        }
+                    }
+                });
                 break;
             case 'customer-change-password':
                 data = $(this).parent().find('input');
-                let oPass = $(data[0]).val();
-                let nPass = $(data[1]).val();
-                
+                let pass = $(data[0]).val();
+                let pass0 = $(data[1]).val();
+                let pass1 = $(data[2]).val();
+                if(pass0 != pass1) return;// Password don't match
+                $.ajax({
+                    type: API.USER_CHANGE_PASS.type,
+                    url: API.USER_CHANGE_PASS.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'oldPassword' : pass,
+                        'newPassword' : pass0
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                alert("Cambiada");
+                                break;    
+                        }
+                    }
+                });
                 break;
             case 'buy':
                 alert("Comprando");
@@ -88,6 +132,9 @@ $(document).ready(function(){
             case 'favourite':
                 alert("Favorito");
                 break;
+            /**
+             * Administrator actions
+             */
         }
     });
     
@@ -153,8 +200,8 @@ $(document).ready(function(){
                 break;    
                 
             case '#customer':
-                for(let i = 0; i <30; i++)
-                    $('#customer-history ul').append(new Sell(i).view());
+                
+               
                
                 $.ajax({
                     type: API.PRODUCT_GET.type,
