@@ -131,9 +131,29 @@ $(document).ready(function(){
                 });
                 break;
             case 'buy':
-                alert("Comprando");
+                $.ajax({
+                    type: API.SELL_CREATE.type,
+                    url: API.SELL_CREATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                       'products' : [
+                           {
+                               'productId' : 1,
+                               'cantidad' : 18
+                           }
+                       ]
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                alert("Comproado");
+                                break;    
+                        }
+                    }
+                });
                 break;
             case 'favourite':
+                // Not impelmented
                 alert("Favorito");
                 break;
             /**

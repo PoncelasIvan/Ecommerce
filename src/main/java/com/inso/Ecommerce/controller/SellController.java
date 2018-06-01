@@ -95,8 +95,9 @@ public class SellController {
 		Sell sell = new Sell(Sell.State.RECEIVED, new Date(), cust);
 		service.save(sell);
 		Iterator<ProductSellBean> it = products.iterator();
+		ProductSellBean aux;
 		while(it.hasNext()) {
-			ProductSellBean aux = it.next();
+			aux = it.next();
 			psService.save(new ProductSell(aux.getCantidad(), pService.findById(aux.getProductId()), sell));
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
