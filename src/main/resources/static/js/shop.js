@@ -138,8 +138,8 @@ $(document).ready(function(){
                     data : JSON.stringify({
                        'products' : [
                            {
-                               'productId' : 1,
-                               'cantidad' : 18
+                               'productId' : $($(this)[0]).attr('data-product-id'),
+                               'cantidad' : 1
                            }
                        ]
                     }),
