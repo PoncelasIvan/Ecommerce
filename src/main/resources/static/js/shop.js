@@ -18,7 +18,11 @@ $(document).ready(function(){
                             console.log($($('#customer-profile-edit-data p')[0]));
                            $($('#customer-profile-edit-data p')[0]).text(json.name);
                            $($('#customer-profile-edit-data p')[1]).text(json.email);
-                            break;    
+                            break; 
+                        case 401:
+                            break;
+                        default: 
+                             
                     }
                 }
             });

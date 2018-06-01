@@ -63,7 +63,7 @@ class ProductDescriptionView {
             btnBuy = '<button type="button" class="btn btn-lg btn-outline-success animated bounce infinite" title="Comprar" data-action="buy">Comprar</button>';
             btnFav = '<button type="button" class="btn btn-outline-warning" style="margin-left: 10px;" title="Añadir al carrito" data-action="favourite"><i class="far fa-star"></i> Añadir al carrito</button>'
 
-            if(!this.product.stock > 0) {
+            if(this.product.stock <= 0) {
                 btnBuy = '<button type="button" class="btn btn-lg  btn-outline-danger" title="El producto esta agotado" disabled>Producto agotado</button>';
                 btnFav = '';
             }
