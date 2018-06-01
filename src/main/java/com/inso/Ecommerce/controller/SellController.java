@@ -1,7 +1,6 @@
 package com.inso.Ecommerce.controller;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +31,7 @@ import com.inso.Ecommerce.service.ProductSellService;
 import com.inso.Ecommerce.service.ProductService;
 import com.inso.Ecommerce.service.SellService;
 import com.inso.Ecommerce.utilities.SessionManager;
+import com.inso.Ecommerce.wrappers.ProductWrapper;
 
 
 @RestController
@@ -89,16 +89,13 @@ public class SellController {
 	 * @return HTTP 201 if all was okey
 	 */
 	@PostMapping("/")
-	public ResponseEntity<Object> create(@Valid @RequestBody List<ProductSellBean> products, HttpServletRequest request){
+	public ResponseEntity<Object> create(@Valid @RequestBody ProductWrapper products, HttpServletRequest request){
 		Customer cust= cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(cust == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		Sell sell = new Sell(Sell.State.RECEIVED, new Date(), cust);
 		service.save(sell);
-		Iterator<ProductSellBean> it = products.iterator();
-		ProductSellBean aux;
-		while(it.hasNext()) {
-			aux = it.next();
-			psService.save(new ProductSell(aux.getCantidad(), pService.findById(aux.getProductId()), sell));
+		for(ProductSellBean proc: products.getProducts()) {
+			psService.save(new ProductSell(proc.getCantidad(), pService.findById(proc.getProductId()), sell));
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
