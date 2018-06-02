@@ -114,13 +114,15 @@ $(document).ready(function(){
                                            FormController.showInInput($($('#loginSection').children('form').children('.form-group')[0]).children('input'), 'EL usuario no es valido', FORMCODES.ERROR);
                                            break;
                                        default:
-                                           // Unexpected error         
+                                           new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                           break;  
                                    }
                                }
                            });
                            break;
                        default:
-                           // Unexpected error
+                           new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                           break;
                    }
                }
            });
