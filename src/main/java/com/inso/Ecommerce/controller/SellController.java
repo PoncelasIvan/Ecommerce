@@ -68,8 +68,7 @@ public class SellController {
 			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state", "products")));
 			/*mappedSells.setFilters(new SimpleFilterProvider().addFilter(ProductSell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("product", "cuantity")));
 			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "img")));
-*/
-
+			*/
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}	
 		Customer customer = cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));

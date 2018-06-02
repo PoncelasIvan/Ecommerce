@@ -16,7 +16,7 @@ $(document).ready(function(){
                         case 200:
                             $($('#customer-profile-edit-data p')[0]).text(json.name);
                             $($('#customer-profile-edit-data p')[1]).text(json.email);
-                            // Preloading huser sell history
+                            // Preloading user sell history
                             $.ajax({
                                 type: API.SELL_GET.type,
                                 url: API.SELL_GET.url,
@@ -29,16 +29,32 @@ $(document).ready(function(){
                                             for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
                                             break;
                                             
+                                         case 401:
+                                            new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                            // No es ni user ni admin y esta comprando -> reload
+                                            $.removeCookie('ROLE');
+                                            $(location).attr('href', 'index.html');
+                                            break;
+
                                         default:
-                                          
+                                            new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                            break;
                                     }
                                 }
                             });  
                             break; 
                         case 401:
-                        default: 
+                             new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                             // No es ni user ni admin y esta comprando -> reload  
+                             $.removeCookie('ROLE');
+                             $(location).attr('href', 'index.html');
+                             break;
+                                
+                            default: 
                             // Delete cookie and reload
-                            
+                            $.removeCookie('ROLE');
+                            $(location).attr('href', 'index.html');
+                            break;
                     }
                 }
             });
@@ -64,7 +80,8 @@ $(document).ready(function(){
                     break;
                     
                 default:
-                  
+                    new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                    break;
             }
         }
     });  
@@ -101,6 +118,18 @@ $(document).ready(function(){
                             case 200:
                                 new Toast('Datos actualizados', 'Sus datos han sido actualizados con exito', 'success', 'bottom-right').show();       
                                 break;    
+                            case 401:
+                                new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                // No se encuentra user y esta cambiando user -> reload
+                                $.removeCookie('ROLE');
+                                $(location).attr('href', 'index.html');
+                                break;    
+                            case 409:
+                                new Toast('Error', 'Conflicto en la creacion de usuario', 'error', 'top-right').show();
+                                break;    
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;      
                         }
                     }
                 });
@@ -123,7 +152,16 @@ $(document).ready(function(){
                         switch (jqXHR.status) {
                             case 200:
                                 new Toast('Contraseña actualizada', 'Su contraseña ha sido actualizada con exito', 'success', 'bottom-right').show();       
+                                break; 
+                             case 401:
+                                new Toast('Error', 'Contraseña incorrecta ', 'error', 'top-right').show();
                                 break;    
+                            case 400:
+                                new Toast('Error', 'Contraseña vacia, inserte contraseña', 'error', 'top-right').show();
+                                break;    
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;     
                         }
                     }
                 });
@@ -144,7 +182,8 @@ $(document).ready(function(){
                     complete: function(jqXHR, textStatus) {
                         switch (jqXHR.status) {
                             case 201:
-                                alert("Comproado");
+                                new Toast('Compra realizada', 'Su compra ha sido realizada con exito', 'success', 'bottom-right').show();       
+                                break; 
                                 $.ajax({
                                     type: API.SELL_GET.type,
                                     url: API.SELL_GET.url,
@@ -157,13 +196,27 @@ $(document).ready(function(){
                                                 $('#customer-history ul').children().remove();
                                                 for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
                                                 break;
-                                                
+                                            case 401:   
+                                                new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                                // No es ni user ni admin y ha comprado -> reload
+                                                $.removeCookie('ROLE');
+                                                $(location).attr('href', 'index.html');
+                                                break;  
                                             default:
-                                              
+                                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                                break; 
                                         }
                                     }
-                                });  
-                                break;    
+                                });
+                            case 401:   
+                                new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                // No es ni user ni admin y ha comprado -> reload
+                                $.removeCookie('ROLE');
+                                $(location).attr('href', 'index.html');
+                                break;   
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;   
                         }
                     }
                 });
@@ -211,8 +264,9 @@ $(document).ready(function(){
                                 for(let i in json) dash.append(new Product(json[i]).view());
                                 break;
                                 
-                            default:
-                              
+                            default: 
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break; 
                         }
                     }
                 });
@@ -236,7 +290,13 @@ $(document).ready(function(){
                                 let dash = $('#product section section');
                                 dash.children().remove();
                                 dash.append(product.view());
-                                break;    
+                                break; 
+                            case 404:
+                                new Toast('Error', 'Producto no encontrado', 'error', 'top-left').show();
+                                break;
+                            default: 
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;       
                         }
                     }
                 });
@@ -263,8 +323,9 @@ $(document).ready(function(){
                                 let dash = $('#customer-sCart .row');
                                 for(let i in json) dash.append(new Product(json[i]).view());
                                 break;
-                                
-                            default:
+                            default: 
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;
                               
                         }
                     }
@@ -282,7 +343,13 @@ $(document).ready(function(){
                     complete: function(jqXHR, textStatus) {
                         let json = jQuery.parseJSON(jqXHR.responseText);
                         switch (jqXHR.status) {
-                            case 200: break;    
+                            case 200: break;  
+                            case 401: 
+                                new Toast('Error', 'Usuario erroneo', 'error', 'top-left').show();
+                                break;  
+                            default: 
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break; 
                         }
                     }
                 });
