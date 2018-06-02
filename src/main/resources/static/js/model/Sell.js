@@ -1,12 +1,18 @@
 class Sell {
     constructor(sell){
         this.id = sell.id;
-        this.date = new Date(sell.date);
+        this.date = sell.date;
        
         switch(sell.state){
             case  'IN_PROGRESS':
                 this.status = 'En camino';
-            break;
+                break;
+            case 'RECEIVED' :
+                this.status = 'Recibido';
+                break;
+            case 'COMPLETED':
+                this.status = 'Completado';
+                break;
         }
 
         this.products = sell.products;
@@ -26,7 +32,7 @@ class SellView {
     }
     
     render(){
-        let anim = (this.sell.id % 2 == 0) ? 'fadeInLeft' : 'fadeInRight';
+        let anim = 'slideInUp';
         let books = '';
         let prod;
         for(let i in this.sell.products){
@@ -36,7 +42,7 @@ class SellView {
         return `
               <li class="list-group-item animated ` + anim + `">
                   <div class="row">
-                      <div class="col-sm">` + this.sell.date.getYear() + `</div>
+                      <div class="col-sm">` + this.sell.date + `</div>
                       <div class="col-sm">` + this.sell.status + `</div>
                       <div class="col-sm">
                           <div class="dropdown">   
@@ -48,4 +54,12 @@ class SellView {
                   </div>
               </li>`;
     }
+}
+
+class AdminSell {
+    
+}
+
+class AdminSellView {
+    
 }

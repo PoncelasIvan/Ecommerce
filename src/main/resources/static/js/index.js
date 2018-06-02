@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
    let whoami = $.cookie('ROLE');
    switch(whoami){
         case 'CUSTOMER' :
@@ -87,6 +87,7 @@ $(document).ready(function(){
                        case 401:
                            // Password incorrect
                            FormController.showInInput($($('#loginSection').children('form').children('.form-group')[1]).children('input'), 'Contraseña incorrecta', FORMCODES.ERROR);
+                           new Toast('Error', 'Contraseña incorrecta', 'error', 'top-right').show();       
                            break;
                        case 404: 
                            // Not user login, maybe is and admin?
@@ -107,6 +108,7 @@ $(document).ready(function(){
                                        case 401:
                                            // Password incorrect
                                            FormController.showInInput($($('#loginSection').children('form').children('.form-group')[1]).children('input'), 'Contraseña incorrecta', FORMCODES.ERROR);
+                                           new Toast('Error', 'Contraseña incorrecta', 'error', 'top-right').show();       
                                            break;
                                        case 404:
                                            FormController.showInInput($($('#loginSection').children('form').children('.form-group')[0]).children('input'), 'EL usuario no es valido', FORMCODES.ERROR);

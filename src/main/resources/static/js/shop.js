@@ -1,8 +1,8 @@
 $(document).ready(function(){
     //$.cookie('ROLE', 'ADMINISTRATOR');
     //$.cookie('ROLE', 'CUSTOMER');
+
     var whoami = $.cookie('ROLE');
-  
     switch(whoami){
         case 'CUSTOMER' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#customer">Área personal</button>');
@@ -14,42 +14,40 @@ $(document).ready(function(){
                     let json = jQuery.parseJSON(jqXHR.responseText);
                     switch (jqXHR.status) {
                         case 200:
-                            console.log(json);
-                            console.log($($('#customer-profile-edit-data p')[0]));
-                           $($('#customer-profile-edit-data p')[0]).text(json.name);
-                           $($('#customer-profile-edit-data p')[1]).text(json.email);
+                            $($('#customer-profile-edit-data p')[0]).text(json.name);
+                            $($('#customer-profile-edit-data p')[1]).text(json.email);
+                            // Preloading huser sell history
+                            $.ajax({
+                                type: API.SELL_GET.type,
+                                url: API.SELL_GET.url,
+                                complete: function(jqXHR, textStatus) {
+                                    let json = jQuery.parseJSON(jqXHR.responseText);
+                                    switch (jqXHR.status) {
+                                        case 200:
+                                            if(!json) return;  
+                                            $('#customer-history ul').children().remove();
+                                            for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
+                                            break;
+                                            
+                                        default:
+                                          
+                                    }
+                                }
+                            });  
                             break; 
                         case 401:
-                            break;
                         default: 
-                             
+                            // Delete cookie and reload
+                            
                     }
                 }
             });
-            $.ajax({
-                type: API.SELL_GET.type,
-                url: API.SELL_GET.url,
-                complete: function(jqXHR, textStatus) {
-                    let json = jQuery.parseJSON(jqXHR.responseText);
-                    switch (jqXHR.status) {
-                        case 200:
-                            if(!json) return;  
-                            console.log("json", json);
-                            $('#customer-history ul').children().remove();
-                            for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
-                            break;
-                            
-                        default:
-                          
-                    }
-                }
-            });  
             break;
         case 'ADMINISTRATOR' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#administrator">Área administrador</button>');
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-danger btn-just-icon" data-action="logout" title="Cerrar sesión" ><i class="fas fa-sign-out-alt"></i></button>');
             break;  
-        default:
+        default: // Not logged user
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" onclick="$(location).attr(\'href\', \'index.html\');"><i class="fas fa-sign-in-alt"></i>Entrar</button>');            
     }
     
@@ -101,7 +99,7 @@ $(document).ready(function(){
                     complete: function(jqXHR, textStatus) {
                         switch (jqXHR.status) {
                             case 200:
-                                alert("Datos cambiados");
+                                new Toast('Datos actualizados', 'Sus datos han sido actualizados con exito', 'success', 'bottom-right').show();       
                                 break;    
                         }
                     }
@@ -124,7 +122,7 @@ $(document).ready(function(){
                     complete: function(jqXHR, textStatus) {
                         switch (jqXHR.status) {
                             case 200:
-                                alert("Cambiada");
+                                new Toast('Contraseña actualizada', 'Su contraseña ha sido actualizada con exito', 'success', 'bottom-right').show();       
                                 break;    
                         }
                     }
@@ -145,8 +143,26 @@ $(document).ready(function(){
                     }),
                     complete: function(jqXHR, textStatus) {
                         switch (jqXHR.status) {
-                            case 200:
+                            case 201:
                                 alert("Comproado");
+                                $.ajax({
+                                    type: API.SELL_GET.type,
+                                    url: API.SELL_GET.url,
+                                    complete: function(jqXHR, textStatus) {
+                                        let json = jQuery.parseJSON(jqXHR.responseText);
+                                        switch (jqXHR.status) {
+                                            case 200:
+                                                if(!json) return;  
+                                                console.log("json", json);
+                                                $('#customer-history ul').children().remove();
+                                                for(let i in json) $('#customer-history ul').append(new Sell(json[i]).view()); 
+                                                break;
+                                                
+                                            default:
+                                              
+                                        }
+                                    }
+                                });  
                                 break;    
                         }
                     }
@@ -154,7 +170,7 @@ $(document).ready(function(){
                 break;
             case 'favourite':
                 // Not impelmented
-                alert("Favorito");
+                new Toast('Añadir a favorito', 'Este metodo aun no esta implementado', 'warning', 'bottom-right').show();       
                 break;
             /**
              * Administrator actions
@@ -224,9 +240,6 @@ $(document).ready(function(){
                 break;    
                 
             case '#customer':
-                
-               
-               
                 $.ajax({
                     type: API.PRODUCT_GET.type,
                     url: API.PRODUCT_GET.url,
@@ -257,15 +270,12 @@ $(document).ready(function(){
                     complete: function(jqXHR, textStatus) {
                         let json = jQuery.parseJSON(jqXHR.responseText);
                         switch (jqXHR.status) {
-                            case 200:
-                                console.log(json);
-                                break;    
+                            case 200: break;    
                         }
                     }
                 });
                 $('#customer-profile-edit-password').hide();
                 break;
-                
             case '#customer-profile-edit-password':
                 $('#customer-profile-edit-data').hide();
                 break;
