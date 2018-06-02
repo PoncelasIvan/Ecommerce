@@ -175,6 +175,18 @@ $(document).ready(function(){
             /**
              * Administrator actions
              */
+            case 'saveProduct':
+                let dad = $($(this).parent().parent()[0]);
+                let par = dad.find('[contenteditable="true"]');
+                let product = new Object();
+                product.id = $(this).attr('data-product-id');
+                product.title = dad.children('h1').text();
+                product.description = $(par[0]).text();
+                product.autor = $(par[1]).text();
+                product.formato = $(par[2]).text();
+                product.price = $(par[3]).text();
+                alert("Implementar guardado y enviar product");
+                break;
         }
     });
     
@@ -276,9 +288,20 @@ $(document).ready(function(){
                 });
                 $('#customer-profile-edit-password').hide();
                 break;
+                
             case '#customer-profile-edit-password':
                 $('#customer-profile-edit-data').hide();
                 break;
+            
+            case '#administrator-profile-new-admin':
+            case '#administrator-profile-new-product':
+            case '#administrator-profile-edit-data':
+            case '#administrator-profile-edit-password':
+                let me = $($(this).attr('data-target'));
+                me.parent().children().hide();
+                me.show();
+                break;
+                
         }
         $($(this).attr('data-target')).show();
     }); 

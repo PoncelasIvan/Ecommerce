@@ -22,10 +22,10 @@
 	cursor: pointer;
 }
 
-#customer-profile .fixed-section ul {
+#customer-profile .fixed-section ul, #administrator-dash .fixed-section ul {
 	list-style : none;
 }
-#customer-profile-edit-password {
+#customer-profile-edit-password, #administrator-profile-new-product, #administrator-profile-edit-data, #administrator-profile-edit-password {
 	display: none;	
 }
 

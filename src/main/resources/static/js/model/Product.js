@@ -58,6 +58,7 @@ class ProductDescriptionView {
         let btnBuy = '';
         let btnFav = '';
         let btnEdit = '';
+        let editable = false;
         switch($.cookie('ROLE')){
         case 'CUSTOMER' :
             btnBuy = '<button type="button" class="btn btn-lg btn-outline-success animated bounce infinite" title="Comprar" data-action="buy" data-product-id="' + this.product.id + '">Comprar</button>';
@@ -69,13 +70,14 @@ class ProductDescriptionView {
             }
             break;
         case 'ADMINISTRATOR':
-            btnEdit = '<button type="button" class="btn btn-lg  btn-outline-success" title="Guardar cambios">Guardar</button>';
+            btnEdit = '<button type="button" class="btn btn-lg  btn-outline-success" title="Guardar cambios" data-action="saveProduct" data-product-id="' + this.product.id + '">Guardar</button>';
+            editable = true;
             break;
         }
         
            
         return `
-            <h1 class="animated bounceInLeft">` + this.product.title + `</h1>
+            <h1 class="animated bounceInLeft" contenteditable="` + editable + `">` + this.product.title + `</h1>
             <div id="ipanema" class="animated zoomInRight carousel slide" data-ride="carousel" style="width: 60%; margin : 0 auto; margin-top: 40px;">
                 <ol class="carousel-indicators">
                     <li data-target="#ipanema" data-slide-to="0" class="active"></li>
@@ -102,14 +104,14 @@ class ProductDescriptionView {
                     <span class="sr-only">Siguiente</span>
                 </a>
             </div>
-            <h4>` + this.product.synopsis + `</h4>
+            <h4 contenteditable="` + editable + `">` + this.product.synopsis + `</h4>
             <div class="container-fluid" style="margin-top: 40px; margin-bottom: 40px;">
                 <div class="row">
                     <div class="col-sm text-right">
                         <h4>Autor</h4>
                     </div>
                     <div class="col-sm text-left">
-                        <h4>` + this.product.author + `</h4>
+                        <h4 contenteditable="` + editable + `">` + this.product.author + `</h4>
                     </div>
                 </div>
                 
@@ -118,7 +120,7 @@ class ProductDescriptionView {
                         <h4>Formato</h4>
                     </div>
                     <div class="col-sm text-left">
-                        <h4>` + this.product.format + `</h4>
+                        <h4 contenteditable="` + editable + `">` + this.product.format + `</h4>
                     </div>
                 </div>
                 
@@ -127,7 +129,7 @@ class ProductDescriptionView {
                         <h4>Precio</h4>
                     </div>
                     <div class="col-sm text-left">
-                        <h4>` + this.product.price + ` &euro;</h4>
+                        <h4><span contenteditable="` + editable + `">` + this.product.price + ` </span>&euro;</h4>
                     </div>
                 </div>
             </div>
