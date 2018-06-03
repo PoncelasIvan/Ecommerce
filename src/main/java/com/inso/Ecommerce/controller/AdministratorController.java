@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.inso.Ecommerce.beans.LoginBean;
+import com.inso.Ecommerce.beans.PasswordBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
 import com.inso.Ecommerce.service.AdministratorService;
@@ -102,6 +103,31 @@ public class AdministratorController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}	
+	
+	
+	/**
+	 * Update the password of the current customer
+	 * @param cust CustomerPassBean with the new password
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
+	@PutMapping("/password")
+	public ResponseEntity<Object> updateAdminPass(@Valid @RequestBody PasswordBean admin, HttpServletRequest request){
+		Administrator rAdmin;
+		if((rAdmin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
+			SessionManager.getInstance().delete(request.getSession());
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
+		}
+		String old = org.apache.commons.codec.digest.DigestUtils.sha256Hex(admin.getOldPassword());
+		if(!rAdmin.getPassword().equals(old)) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
+		if(admin.getNewPassword() == null || "".equals(admin.getNewPassword())) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				
+		rAdmin.setPassword(admin.getNewPassword());			
+		service.save(rAdmin);
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
 	
 	/**
 	 * Delete the current administrator account

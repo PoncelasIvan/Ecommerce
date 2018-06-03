@@ -43,6 +43,10 @@ var API = {
         	type : 'PUT',
         	url : '/api/admin/'
         },
+        ADMIN_CHANGE_PASS : {
+        	type : 'PUT',
+        	url : '/api/admin/password/'
+        },
         ADMIN_DELETE : {
         	type : 'DELETE',
         	url : '/api/admin/'

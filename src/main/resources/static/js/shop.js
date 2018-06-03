@@ -240,6 +240,53 @@ $(document).ready(function(){
                 product.price = $(par[3]).text();
                 alert("Implementar guardado y enviar product");
                 break;
+            
+            /**
+             * Cosas de Dani
+             */
+            case 'administrator-change-password':
+            	data = $(this).parent().find('input');
+                let pass = $(data[0]).val();
+                let pass0 = $(data[1]).val();
+                let pass1 = $(data[2]).val();
+                if(pass0 != pass1) return;// Password don't match
+                $.ajax({
+                    type: API.ADMIN_CHANGE_PASS.type,
+                    url: API.USER_CHANGE_PASS.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'oldPassword' : pass,
+                        'newPassword' : pass0
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                new Toast('Contraseña actualizada', 'Su contraseña ha sido actualizada con exito', 'success', 'bottom-right').show();       
+                                break; 
+                             case 401:
+                                new Toast('Error', 'Contraseña incorrecta ', 'error', 'top-right').show();
+                                break;    
+                            case 400:
+                                new Toast('Error', 'Contraseña vacia, inserte contraseña', 'error', 'top-right').show();
+                                break;    
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;     
+                        }
+                    }
+                });
+            	break;
+            	
+            case 'administrator-change-data':
+            	
+            	break;
+            	
+            case 'administrator-create-admin':
+            	
+            	break;
+            /**
+             * Fin Cosas de Dani?
+             */
         }
     });
     

@@ -121,11 +121,45 @@
 				            		</div>
 				            		
 				            		<div id="administrator-profile-edit-data">
-				            			Editar datos
+				            		<!-- empieza Dani -->
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">Nombre de usuario</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">email</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<button type="button" class="btn btn-danger btn-round btn-lg" data-action="administrator-change-data">Actualizar</button>
+				            		<!-- acaba Dani -->
 				            		</div>
 				            		
 				            		<div id="administrator-profile-edit-password">
-				            			Contraseña
+				            		<!-- empieza Dani -->
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Contraseña actual</span>
+												<input type="password" class="form-control" placeholder="Contraseña actual">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Nueva contraseña</span>
+												<input type="password" class="form-control" placeholder="Nueva contraseña">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Repita la contraseña</span>
+												<input type="password" class="form-control" placeholder="Repita la contraseña">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-change-password">Actualizar</button>
+							    		</form>
+				            		<!-- acaba Dani -->
 				            		</div>
 				            		
 	    						</div>
