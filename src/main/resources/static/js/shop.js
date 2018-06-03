@@ -278,10 +278,44 @@ $(document).ready(function(){
             	break;
             	
             case 'administrator-change-data':
-            	
+            	data= $(this).parent().find('p');
+                let name = $(data[0]).text();
+                let email = $(data[1]).text();
+                $.ajax({
+                    type: API.ADMIN_UPDATE.type,
+                    url: API.ADMIN_UPDATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'name' : name,
+                        'email' : email
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                new Toast('Datos actualizados', 'Sus datos han sido actualizados con exito', 'success', 'bottom-right').show();       
+                                break;    
+                            case 401:
+                                new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                // No se encuentra user y esta cambiando user -> reload
+                                $.removeCookie('ROLE');
+                                $(location).attr('href', 'index.html');
+                                break;    
+                            case 409:
+                                new Toast('Error', 'Conflicto en la creacion de usuario', 'error', 'top-right').show();
+                                break;    
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;      
+                        }
+                    }
+                });
             	break;
             	
             case 'administrator-create-admin':
+            	
+            	break;
+            
+            case 'administrator-change-product':
             	
             	break;
             /**

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.inso.Ecommerce.beans.AdminDataBean;
 import com.inso.Ecommerce.beans.LoginBean;
 import com.inso.Ecommerce.beans.PasswordBean;
 import com.inso.Ecommerce.model.Administrator;
@@ -80,7 +81,7 @@ public class AdministratorController {
 	 * @return HTTP 200 if all was okey
 	 */
 	@PutMapping("/")
-	public ResponseEntity<Object> updateAdministrator(@Valid @RequestBody Administrator admin, HttpServletRequest request) {	
+	public ResponseEntity<Object> updateAdministrator(@Valid @RequestBody AdminDataBean admin, HttpServletRequest request) {	
 		Administrator rAdmin;
 		if((rAdmin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
 			SessionManager.getInstance().delete(request.getSession());
@@ -97,7 +98,6 @@ public class AdministratorController {
 				if(aux != null && aux.getId() != rAdmin.getId()) return new ResponseEntity<>(HttpStatus.CONFLICT);
 				rAdmin.setName(admin.getName());
 			}
-			if(admin.getPassword() != null && !admin.getPassword().isEmpty()) rAdmin.setPasswordHashed(admin.getPassword());
 			service.save(rAdmin);
 			SessionManager.getInstance().setSessionEmail(request.getSession(), admin.getEmail());
 			return new ResponseEntity<>(HttpStatus.OK);
