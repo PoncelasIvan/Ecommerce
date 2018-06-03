@@ -73,7 +73,7 @@ var API = {
         },
         ADMIN_DELETE_ADMIN : {
         	type : 'DELETE',
-        	url : '/api/admin/administrator/{id}/'
+        	url : '/api/admin/administrator/' //Requiere parametro {id}
         },
         ADMIN_GET_ALL_CUST : {
         	type : 'GET',
@@ -81,11 +81,11 @@ var API = {
         },
         ADMIN_GET_CUST : {
         	type : 'GET',
-        	url : '/api/admin/customer/{id}/'
+        	url : '/api/admin/customer/' //Requiere parametro {id}
         },
         ADMIN_DELETE_CUST : {
         	type : 'DELETE',
-        	url : '/api/admin/customer/{id}/'
+        	url : '/api/admin/customer/' //Requiere parametro {id}
         },
         
         //Products(to be done)
@@ -103,15 +103,15 @@ var API = {
         },
         PRODUCT_DELETE : {
         	type : 'DELETE',
-        	url : '/api/product/{id}/'
+        	url : '/api/product/' //Requiere parametro {id}
         },
         PRODUCT_SET_IMAGE : {
         	type : 'POST',
-        	url : '/api/product/{id}/image/'
+        	url : '/api/product/' //Requiere parametro {id}/image/
         },
         PRODUCT_DELETE_IMAGE : {
         	type : 'DELETE',
-        	url : '/api/product/image/{imageId}/'
+        	url : '/api/product/image/' //Requiere parametro {imageId}
         },
         PRODUCT_SEARCH : {
         	type : 'POST',
@@ -125,7 +125,7 @@ var API = {
         },
         SELL_GET_BY_STATE : {
         	type : 'GET',
-        	url : '/api/sell/'
+        	url : '/api/sell/' //Requiere parametro {state}
         },
         SELL_CREATE : {
         	type : 'POST',
