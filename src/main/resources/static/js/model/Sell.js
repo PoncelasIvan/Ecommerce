@@ -35,6 +35,22 @@ class SellView {
         let anim = 'slideInUp';
         let books = '';
         let prod;
+        let adminStatus = '';
+        if($.cookie('ROLE') == 'ADMINISTRATOR'){
+            adminStatus = `
+                <div class="col-sm">
+                    <div class="dropdown">   
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButtonStatus-` + this.sell.id +`" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cambiar estado</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonStatus` + this.sell.id +`">
+                                <a class="dropdown-item" href="#" data-action="administrator-update-status" data-sell-id="` + this.sell.id + `" data-sell-status="RECEIVED">Recibido</a>
+                                <a class="dropdown-item" href="#" data-action="administrator-update-status" data-sell-id="` + this.sell.id + `" data-sell-status="IN_PROGRESS">En camino</a>
+                                <a class="dropdown-item" href="#" data-action="administrator-update-status" data-sell-id="` + this.sell.id + `" data-sell-status="COMPLETED">Completado</a>
+
+                            </div>
+                     </div>
+                </div>
+            `;
+        }
         for(let i in this.sell.products){
             prod =  this.sell.products[i];
             books += '<a class="dropdown-item" href="#" data-target="#product" data-back="#customer" data-product-id="' + prod.id + '">' + prod.title + '</a>';

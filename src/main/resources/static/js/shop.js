@@ -71,7 +71,27 @@ $(document).ready(function(){
                     	case 200:
                     		$($('#administrator-profile-edit-data p')[0]).text(json.name);
                     		$($('#administrator-profile-edit-data p')[1]).text(json.email);
-                    		//Precarga de productos(por confirmar)
+                    		//Precarga de productos
+                    		$.ajax({
+                                type : API. SELL_GET_BY_STATE.type,
+                                url : API. SELL_GET_BY_STATE.url,
+                                complete : function(jqXHR, textStatus) {
+                                    let json = jQuery.parseJSON(jqXHR.responseText);
+                                    switch (jqXHR.status) {
+                                        case 200:
+                                           console.log('-->',json);
+                                            break;
+                                        case 401:
+                                            
+                                            break;
+                                        default:
+                                            // Delete cookie and reload
+                                            $.removeCookie('ROLE');
+                                            $(location).attr('href', 'index.html');
+                                            break;
+                                    }
+                                }
+                            });
                     		break;
                     	case 401:
                     		new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
@@ -265,15 +285,19 @@ $(document).ready(function(){
                 product.price = $(par[3]).text();
                 alert("Implementar guardado y enviar product");
                 break;
-            
+            case 'administrator-update-status':
+                let sellId = $(this).attr('data-sell-id');
+                let sellStatus = $(this).attr('data-sell-status');
+                alert("Cambiar venta " + sellId + " a estado " + sellStatus);
+                break;
             /**
              * Cosas de Dani
              */
             case 'administrator-change-password':
             	data = $(this).parent().find('input');
-                let pass = $(data[0]).val();
-                let pass0 = $(data[1]).val();
-                let pass1 = $(data[2]).val();
+                pass = $(data[0]).val();
+                pass0 = $(data[1]).val();
+                pass1 = $(data[2]).val();
                 if(pass0 != pass1) return;// Password don't match
                 $.ajax({
                     type: API.ADMIN_CHANGE_PASS.type,
@@ -304,8 +328,8 @@ $(document).ready(function(){
             	
             case 'administrator-change-data':
             	data= $(this).parent().find('p');
-                let name = $(data[0]).text();
-                let email = $(data[1]).text();
+                name = $(data[0]).text();
+                email = $(data[1]).text();
                 $.ajax({
                     type: API.ADMIN_UPDATE.type,
                     url: API.ADMIN_UPDATE.url,
