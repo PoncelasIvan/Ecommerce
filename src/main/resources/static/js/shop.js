@@ -62,6 +62,31 @@ $(document).ready(function(){
         case 'ADMINISTRATOR' :
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" data-target="#administrator">Área administrador</button>');
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-danger btn-just-icon" data-action="logout" title="Cerrar sesión" ><i class="fas fa-sign-out-alt"></i></button>');
+            $.ajax({
+            	type : API.ADMIN_CHECK.type,
+            	url : API.ADMIN_CHECK.url,
+            	complete : function(jqXHR, textStatus) {
+                    let json = jQuery.parseJSON(jqXHR.responseText);
+                    switch (jqXHR.status) {
+                    	case 200:
+                    		$($('#administrator-profile-edit-data p')[0]).text(json.name);
+                    		$($('#administrator-profile-edit-data p')[1]).text(json.email);
+                    		//Precarga de productos(por confirmar)
+                    		break;
+                    	case 401:
+                    		new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                            // No es ni user ni admin y esta comprando -> reload  
+                            $.removeCookie('ROLE');
+                            $(location).attr('href', 'index.html');
+                    		break;
+                    	default:
+                    		// Delete cookie and reload
+                            $.removeCookie('ROLE');
+                            $(location).attr('href', 'index.html');
+                            break;
+                    }
+            	}
+            });
             break;  
         default: // Not logged user
             $('#nTog > .ml-auto').append('<button type="button" class="btn btn-outline-info btn-lg" onclick="$(location).attr(\'href\', \'index.html\');"><i class="fas fa-sign-in-alt"></i>Entrar</button>');            
