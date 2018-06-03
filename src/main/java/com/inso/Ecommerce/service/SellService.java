@@ -14,6 +14,8 @@ public interface SellService {
 	
 	Sell findById(int id);
 	
+	List<Sell> findByState(int state);
+	
 	void delete(Sell sell);
 	
 }

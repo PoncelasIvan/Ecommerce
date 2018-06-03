@@ -119,6 +119,10 @@ var API = {
         	type : 'GET',
         	url : '/api/sell/'
         },
+        SELL_GET_BY_STATE : {
+        	type : 'GET',
+        	url : '/api/sell/{state}'
+        }
         SELL_CREATE : {
         	type : 'POST',
         	url : '/api/sell/'

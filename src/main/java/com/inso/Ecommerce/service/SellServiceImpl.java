@@ -30,6 +30,11 @@ public class SellServiceImpl implements SellService{
 		Optional<Sell> sell = repository.findById(id);
 		return sell.isPresent() ? sell.get() : null;
 	}
+	
+	@Override
+	public List<Sell> findByState(int state){
+		return repository.findByState(state);
+	}
 
 	@Override
 	public void delete(Sell sell) {

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,6 +81,25 @@ public class SellController {
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
+	
+	
+	/**
+	 * Only for admins
+	 * @param state
+	 * return the sells that correspond with the given state
+	 */
+	@GetMapping("/{state}")
+	public ResponseEntity<Object> getSellsByState(@PathVariable("state") int state, HttpServletRequest request){
+		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(admin != null) {
+			List<Sell> sells = service.findByState(state);
+			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state", "products")));
+			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+	
 	
 	/**
 	 * Create a new sell
