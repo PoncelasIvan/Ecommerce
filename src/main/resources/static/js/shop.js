@@ -277,7 +277,7 @@ $(document).ready(function(){
                 if(pass0 != pass1) return;// Password don't match
                 $.ajax({
                     type: API.ADMIN_CHANGE_PASS.type,
-                    url: API.USER_CHANGE_PASS.url,
+                    url: API.ADMIN_CHANGE_PASS.url,
                     contentType : "application/json; charset=utf-8",
                     data : JSON.stringify({
                         'oldPassword' : pass,
@@ -340,7 +340,7 @@ $(document).ready(function(){
             	
             	break;
             
-            case 'administrator-change-product':
+            case 'administrator-create-product':
             	
             	break;
             /**

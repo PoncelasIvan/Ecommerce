@@ -113,15 +113,52 @@
 				            	</div>
 				            	<div class="col-lg-8 col-md-12">
 				            		<div id="administrator-profile-new-admin">
-				            			Nuevo admin
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Nombre</span>
+												<input type="text" class="form-control" placeholder="Nombre">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Email</span>
+												<input type="text" class="form-control" placeholder="Email">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Contraseña</span>
+												<input type="password" class="form-control" placeholder="Contraseña">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Repita la contraseña</span>
+												<input type="password" class="form-control" placeholder="Repita la contraseña">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-create-admin">Crear Administrador</button>
+							    		</form>
 				            		</div>
 				            		
 				            		<div id="administrator-profile-new-product">
-				            			Nuevo producto
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Título</span>
+												<input type="text" class="form-control" placeholder="Título">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Autor</span>
+												<input type="text" class="form-control" placeholder="Autor">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Formato</span>
+												<input type="radio" class="form-control" name="format" value="Tapa Dura">Tapa Dura
+												<input type="radio" class="form-control" name="format" value="Tapa Blanda">Tapa Blanda
+												<input type="radio" class="form-control" name="format" value="Formato Bolsillo">Formato Bolsillo<br>
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Sinópsis</span>
+												<input type="text" class="form-control" placeholder="Sinópsis">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-create-product">Crear Producto</button>
+							    		</form>
 				            		</div>
 				            		
 				            		<div id="administrator-profile-edit-data">
-				            		<!-- empieza Dani -->
 				            			<div class="row">			
 				            				<div class="col-sm">
 				            					<span class="label label-success">Nombre de usuario</span>
@@ -139,11 +176,9 @@
 				            				</div>
 				            			</div>
 				            			<button type="button" class="btn btn-danger btn-round btn-lg" data-action="administrator-change-data">Actualizar</button>
-				            		<!-- acaba Dani -->
 				            		</div>
 				            		
 				            		<div id="administrator-profile-edit-password">
-				            		<!-- empieza Dani -->
 				            			<form class="container-fluid ">
 							    			<div class="form-group">
 							    				<span class="label label-success">Contraseña actual</span>
@@ -159,7 +194,6 @@
 											</div>
 											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-change-password">Actualizar</button>
 							    		</form>
-				            		<!-- acaba Dani -->
 				            		</div>
 				            		
 	    						</div>
