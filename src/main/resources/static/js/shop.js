@@ -45,7 +45,7 @@ $(document).ready(function(){
                             break; 
                         case 401:
                              new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
-                             // No es ni user ni admin y esta comprando -> reload  
+                             // No es ni user y esta comprando -> reload  
                              $.removeCookie('ROLE');
                              $(location).attr('href', 'index.html');
                              break;
@@ -72,26 +72,12 @@ $(document).ready(function(){
                     		$($('#administrator-profile-edit-data p')[0]).text(json.name);
                     		$($('#administrator-profile-edit-data p')[1]).text(json.email);
                     		//Precarga de productos
-                    		$.ajax({
-                                type : API. SELL_GET_BY_STATE.type,
-                                url : API. SELL_GET_BY_STATE.url,
-                                complete : function(jqXHR, textStatus) {
-                                    let json = jQuery.parseJSON(jqXHR.responseText);
-                                    switch (jqXHR.status) {
-                                        case 200:
-                                           console.log('-->',json);
-                                            break;
-                                        case 401:
-                                            
-                                            break;
-                                        default:
-                                            // Delete cookie and reload
-                                            $.removeCookie('ROLE');
-                                            $(location).attr('href', 'index.html');
-                                            break;
-                                    }
-                                }
-                            });
+                    		/*
+                    		 * Precargar solo productos en camino
+                    		 * ??????????????????
+                    		 * Pintar la lista añadiento sellview
+                    		 */
+                    		
                     		break;
                     	case 401:
                     		new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();

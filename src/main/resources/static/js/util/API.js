@@ -125,7 +125,7 @@ var API = {
         },
         SELL_GET_BY_STATE : {
         	type : 'GET',
-        	url : '/api/sell/{state}'
+        	url : '/api/sell/'
         },
         SELL_CREATE : {
         	type : 'POST',
