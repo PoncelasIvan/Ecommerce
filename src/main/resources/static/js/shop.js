@@ -336,7 +336,7 @@ $(document).ready(function(){
                                 $(location).attr('href', 'index.html');
                                 break;    
                             case 409:
-                                new Toast('Error', 'Conflicto en la creacion de usuario', 'error', 'top-right').show();
+                                new Toast('Error', 'Conflicto en la actualizacion de usuario', 'error', 'top-right').show();
                                 break;    
                             default:
                                 new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
@@ -347,11 +347,85 @@ $(document).ready(function(){
             	break;
             	
             case 'administrator-create-admin':
-            	
+            	data = $(this).parent().find('input');
+                name = $(data[0]).val();
+                email = $(data[1]).val();
+                pass1 = $(data[2]).val();
+                pass2 = $(data[3]).val();
+                if(pass1 != pass2) return; //las contraseñas no son iguales
+                
+                $.ajax({
+                    type: API.ADMIN_REGISTER.type,
+                    url: API.ADMIN_REGISTER.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'name' : name,
+                        'email' : email,
+                        'password' : pass1
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                new Toast('Administrador creado', 'El administrador ha sido creado correctamente', 'success', 'bottom-right').show();       
+                                break;    
+                            case 403:
+                                new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                                // No se encuentra user y esta cambiando user -> reload
+                                $.removeCookie('ROLE');
+                                $(location).attr('href', 'index.html');
+                                break;    
+                            case 409:
+                                new Toast('Error', 'Conflicto en la creacion de usuario', 'error', 'top-right').show();
+                                break;    
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;      
+                        }
+                    }
+                });
+                    
             	break;
             
             case 'administrator-create-product':
-            	
+            	data = $(this).parent().find('input');
+                title = $(data[0]).val();
+                author = $(data[1]).val();
+                synopsis = $(data[2]).val();
+                price = $(data[3]).val();
+                stock = $(data[4]).val();
+                format = $(this).parent().find('input[name=format]:checked').val();
+                if(Number.isInteger(price) || Number.isInteger(stock)){ new Toast('Administrador creado', 'El administrador ha sido creado correctamente', 'success', 'bottom-right').show();return;} // precio o stock no es un int
+               
+                $.ajax({
+                    type: API.PRODUCT_CREATE.type,
+                    url: API.PRODUCT_CREATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'title' : title,
+                        'author' : author,
+                        'synopsis' : synopsis,
+                        'price' : price,
+                        'stock' : stock,
+                        'format' : format
+                    }),
+                    completed: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                        case 201:
+                            new Toast('Producto creado', 'El producto ha sido creado correctamente', 'success', 'bottom-right').show();       
+                            break;    
+                        case 403:
+                            new Toast('Error', 'Usuario no encontrado', 'error', 'top-right').show();
+                            // No se encuentra user y esta cambiando user -> reload
+                            $.removeCookie('ROLE');
+                            $(location).attr('href', 'index.html');
+                            break;     
+                        default:
+                            new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                            break;      
+                    }
+                }
+            });
+                    	
             	break;
             /**
              * Fin Cosas de Dani?
