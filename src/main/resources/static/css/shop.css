@@ -44,3 +44,10 @@
 #customer-profile-edit-password .row div:last-child, #customer-profile-edit-data .row div:last-child{
 	text-align: left;
 }
+
+#administrator-request .tab-content {
+	margin-top: 30px;
+}
+#administrator-request .tab-content li {
+	border: none;
+}

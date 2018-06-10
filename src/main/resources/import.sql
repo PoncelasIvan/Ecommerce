@@ -11,10 +11,19 @@ INSERT INTO image (id, url, product_id) VALUES (1, 'C:\Users\Dani\Desktop\porno\
 
 INSERT INTO sell (id, state, date, customer_id) VALUES (1, 1, NOW(), 1);
 INSERT INTO sell (id, state, date, customer_id) VALUES (2, 2, NOW(), 2);
+INSERT INTO sell (id, state, date, customer_id) VALUES (3, 1, NOW(), 1);
+INSERT INTO sell (id, state, date, customer_id) VALUES (4, 1, NOW(), 1);
+INSERT INTO sell (id, state, date, customer_id) VALUES (5, 1, NOW(), 1);
+INSERT INTO sell (id, state, date, customer_id) VALUES (6, 1, NOW(), 1);
+INSERT INTO sell (id, state, date, customer_id) VALUES (7, 1, NOW(), 1);
+INSERT INTO sell (id, state, date, customer_id) VALUES (8, 1, NOW(), 1);
 
-INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (1, 10, 3, 1);
-INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (2, 5, 1, 1);
-INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (3, 2, 2, 1);
 
-INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (4, 300, 1, 2);
-INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (5, 5050, 2, 2);
+INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (1, 1, 3, 1);
+INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (1, 1, 3, 3);
+
+--INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (2, 5, 1, 1);
+--INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (3, 2, 2, 1);
+
+INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (4, 1, 1, 2);
+--INSERT INTO product_sell (id, cuantity, product_id, sell_id) VALUES (5, 5050, 2, 2);

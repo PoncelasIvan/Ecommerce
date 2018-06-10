@@ -67,6 +67,7 @@ $(document).ready(function(){
             	url : API.ADMIN_CHECK.url,
             	complete : function(jqXHR, textStatus) {
                     let json = jQuery.parseJSON(jqXHR.responseText);
+                    if(!json) return; 
                     switch (jqXHR.status) {
                     	case 200:
                     		$($('#administrator-profile-edit-data p')[0]).text(json.name);
@@ -77,6 +78,32 @@ $(document).ready(function(){
                     		 * ??????????????????
                     		 * Pintar la lista añadiento sellview
                     		 */
+                    		 $.ajax({
+                    		     type: API.SELL_GET_BY_STATE.type,
+                    		     url: API.SELL_GET_BY_STATE.url + '1', // In progress
+                    		     complete: function(jqXHR, textStatus) {
+                    		         let json = jQuery.parseJSON(jqXHR.responseText);
+                    		         switch (jqXHR.status) {
+                    		             case 200:
+                    		                 if(!json) return; 
+                                             $('#administrator-request-incoming').children().remove();
+
+                    		                 for(var e = 0; e < 10; e++){
+                    		                     for(i in json){
+                                                     // We must retrieve this id
+                                                     json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
+                                                     $('#administrator-request-incoming').append(new Sell(json[i]).view());
+                                                     
+                                                 }
+                    		                 }
+                    		                 break;
+                    		                  
+                    		              default:
+                    		                  new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                    		                  break;
+                    		         }
+                    		     }
+                    		  });  
                     		
                     		break;
                     	case 401:
@@ -256,9 +283,7 @@ $(document).ready(function(){
                 // Not impelmented
                 new Toast('Añadir a favorito', 'Este metodo aun no esta implementado', 'warning', 'bottom-right').show();       
                 break;
-            /**
-             * Administrator actions
-             */
+
             case 'saveProduct':
                 let dad = $($(this).parent().parent()[0]);
                 let par = dad.find('[contenteditable="true"]');
@@ -427,9 +452,6 @@ $(document).ready(function(){
             });
                     	
             	break;
-            /**
-             * Fin Cosas de Dani?
-             */
         }
     });
     

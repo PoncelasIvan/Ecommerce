@@ -66,7 +66,7 @@ public class SellController {
 		if(admin != null){
 			List<Sell> sells = service.findAll();
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state", "products")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "customer", "date", "state", "products")));
 			/*mappedSells.setFilters(new SimpleFilterProvider().addFilter(ProductSell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("product", "cuantity")));
 			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "img")));
 			*/

@@ -53,7 +53,10 @@ class SellView {
         }
         for(let i in this.sell.products){
             prod =  this.sell.products[i];
-            books += '<a class="dropdown-item" href="#" data-target="#product" data-back="#customer" data-product-id="' + prod.id + '">' + prod.title + '</a>';
+            if($.cookie('ROLE') == 'ADMINISTRATOR')
+                books += '<a class="dropdown-item" href="#" data-target="#product" data-back="#administrator" data-product-id="' + prod.id + '">' + prod.title + '</a>';
+            else
+                books += '<a class="dropdown-item" href="#" data-target="#product" data-back="#customer" data-product-id="' + prod.id + '">' + prod.title + '</a>';   
         }
         return `
               <li class="list-group-item animated ` + anim + `">
@@ -67,6 +70,7 @@ class SellView {
                            </div>
                       </div>
                       <div class="col-sm">` + this.sell.price + ` &euro;</div>
+                      ` + adminStatus + `
                   </div>
               </li>`;
     }
