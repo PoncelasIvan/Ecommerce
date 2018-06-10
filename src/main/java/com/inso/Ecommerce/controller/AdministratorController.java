@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.inso.Ecommerce.beans.AdminDataBean;
+import com.inso.Ecommerce.beans.LoginBean;
+import com.inso.Ecommerce.beans.PasswordBean;
 import com.inso.Ecommerce.model.Administrator;
 import com.inso.Ecommerce.model.Customer;
 import com.inso.Ecommerce.service.AdministratorService;
@@ -78,7 +81,7 @@ public class AdministratorController {
 	 * @return HTTP 200 if all was okey
 	 */
 	@PutMapping("/")
-	public ResponseEntity<Object> updateAdministrator(@Valid @RequestBody Administrator admin, HttpServletRequest request) {	
+	public ResponseEntity<Object> updateAdministrator(@Valid @RequestBody AdminDataBean admin, HttpServletRequest request) {	
 		Administrator rAdmin;
 		if((rAdmin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
 			SessionManager.getInstance().delete(request.getSession());
@@ -95,12 +98,36 @@ public class AdministratorController {
 				if(aux != null && aux.getId() != rAdmin.getId()) return new ResponseEntity<>(HttpStatus.CONFLICT);
 				rAdmin.setName(admin.getName());
 			}
-			if(admin.getPassword() != null && !admin.getPassword().isEmpty()) rAdmin.setPasswordHashed(admin.getPassword());
 			service.save(rAdmin);
 			SessionManager.getInstance().setSessionEmail(request.getSession(), admin.getEmail());
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}	
+	
+	
+	/**
+	 * Update the password of the current customer
+	 * @param cust CustomerPassBean with the new password
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
+	@PutMapping("/password")
+	public ResponseEntity<Object> updateAdminPass(@Valid @RequestBody PasswordBean admin, HttpServletRequest request){
+		Administrator rAdmin;
+		if((rAdmin = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
+			SessionManager.getInstance().delete(request.getSession());
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
+		}
+		String old = org.apache.commons.codec.digest.DigestUtils.sha256Hex(admin.getOldPassword());
+		if(!rAdmin.getPassword().equals(old)) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
+		if(admin.getNewPassword() == null || "".equals(admin.getNewPassword())) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				
+		rAdmin.setPassword(admin.getNewPassword());			
+		service.save(rAdmin);
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
 	
 	/**
 	 * Delete the current administrator account
@@ -221,8 +248,9 @@ public class AdministratorController {
 	 * @return HTTP 200 if all was okey
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@Valid @RequestBody Administrator admin, HttpServletRequest request) {
-		Administrator rAdmin = (admin.getEmail() != null) ? service.findByEmail(admin.getEmail()) : service.findByName(admin.getName());
+	public ResponseEntity<Object> login(@Valid @RequestBody LoginBean admin, HttpServletRequest request) {
+		Administrator rAdmin = service.findByEmail(admin.getUser());
+		if(rAdmin == null) rAdmin = service.findByName(admin.getUser());
 		if(rAdmin == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 		
 		if(rAdmin.getPassword().equals(admin.getPassword())) {

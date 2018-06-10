@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,13 +55,13 @@ public class ProductController {
 	/**
 	 * If the current user is a customer or in not logged returns all products
 	 * If the current user is an administrator returns only the administrator products
-	 * @param request HTTP current request HTTP current request
+	 * @param request HTTP current request
 	 * @return all || own products
 	 */
 	@GetMapping("/")
 	public ResponseEntity<Object> getProducts(HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
-		SimpleFilterProvider filter = new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("name", "price"));
+		SimpleFilterProvider filter = new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "price", "img"));
 		if(administrator != null) {
 			MappingJacksonValue mappedProducts = new MappingJacksonValue(administrator.getProducts());
 			mappedProducts.setFilters(filter);
@@ -71,6 +72,21 @@ public class ProductController {
 		return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
 	}
 	
+	/*
+	 * Find a product in function of his name and author
+	 * @param pattern String for the search
+	 * @param request HTTP
+	 * @return products
+	 */
+	@PostMapping("/search")
+	public ResponseEntity<Object> findProducts(@Valid String search, HttpServletRequest request){
+		if(search == "")
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		MappingJacksonValue mappedProducts = new MappingJacksonValue(service.search(search));
+		mappedProducts.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "price", "imgs")));
+		return new ResponseEntity<>(mappedProducts, HttpStatus.OK);
+	}
+	
 	/**
 	 * Creates a new product
 	 * @param product Product to create
@@ -78,7 +94,7 @@ public class ProductController {
 	 * @return HTTP 201 if all was okey
 	 */
 	@PostMapping("/")
-	public ResponseEntity<Object> create(@Valid @RequestBody Product product, HttpServletRequest request){
+	public ResponseEntity<Object> create(@RequestBody Product product, HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);	
 		product.setDate(new Date());
@@ -87,7 +103,24 @@ public class ProductController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	/**
+	@PutMapping("/")
+	public ResponseEntity<Object> update(@Valid @RequestBody Product product, HttpServletRequest request){
+		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);	
+		Product aux = service.findById(product.getId());
+		if(aux == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		aux.setAuthor(product.getAuthor());
+		aux.setFormat(product.getFormat());
+		aux.setPrice(product.getPrice());
+		aux.setStock(product.getStock());
+		aux.setSynopsis(product.getSynopsis());
+		aux.setTitle(product.getTitle());
+		service.save(aux);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	/**, 
 	 * Return all data from a product
 	 * @param id Id of a products
 	 * @param request HTTP current request
@@ -97,10 +130,13 @@ public class ProductController {
 	public ResponseEntity<Object> getDetails(@PathVariable("id") int id, HttpServletRequest request){
 		Product prod = service.findById(id);
 		if(prod == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
 		MappingJacksonValue mappedProduct = new MappingJacksonValue(service.findById(id));
-		mappedProduct.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("name", "description", "price", "stock")));
+		
+		mappedProduct.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "synopsis", "format", "price", "stock", "imgs")));
 		return new ResponseEntity<>(mappedProduct, HttpStatus.OK);
 	}
+
 	
 	/**
 	 * Delete a product

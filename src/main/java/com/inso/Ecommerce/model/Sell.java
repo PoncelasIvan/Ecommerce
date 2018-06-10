@@ -15,8 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 @JsonFilter(Sell.FILTER)  
@@ -39,7 +41,6 @@ public class Sell {
 	@NotNull
 	private State state;
 
-	@NotNull 
 	private Date date;
 	
 	@ManyToOne
@@ -75,21 +76,53 @@ public class Sell {
 		this.state = state;
 	}
 
-	public Date getDate() {
-		return date;
+	public String getDate() {
+		return date.toString();
 	}
 
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public String getCustomer() {
+		return customer.getName();
 	}
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
+	/*public List<List<String>> getProducts(){
+		List<List<String>> prod = new ArrayList<List<String>>();
+		for(int i = 0; i < products.size(); i++){
+			List<String> aux = new ArrayList<String>();
 
+			aux.add(""+products.get(i).getProduct().getId());
+			aux.add(products.get(i).getProduct().getTitle());
+			aux.add(""+products.get(i).getProduct().getPrice());
+
+			aux.add(""+products.get(i).getCuantity());
+
+			prod.add(aux);
+		}
+		return prod;
+	}*/
+	
+	public ArrayNode getProducts(){
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode prod = mapper.createArrayNode();
+		
+		for(int i = 0; i < products.size(); i++){
+			ObjectNode aux = mapper.createObjectNode();
+			
+			aux.put("id", products.get(i).getProduct().getId());
+			aux.put("title", products.get(i).getProduct().getTitle());
+			aux.put("price", products.get(i).getProduct().getPrice());
+			aux.put("cuantity", products.get(i).getCuantity());
+
+			prod.add(aux);
+		}
+		return prod;
+	}
 	
 }

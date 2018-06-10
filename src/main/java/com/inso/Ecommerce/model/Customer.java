@@ -75,10 +75,6 @@ public class Customer {
 		this.password = DigestUtils.sha256Hex(password);
 	}
 	
-	public void setPasswordHashed(String hash) {
-		this.password = hash;
-	}
-	
 	public void setSells(List<Sell> sellus){
 		this.sells = sellus;
 	}

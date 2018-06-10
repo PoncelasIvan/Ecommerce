@@ -1,7 +1,6 @@
 package com.inso.Ecommerce.controller;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +32,7 @@ import com.inso.Ecommerce.service.ProductSellService;
 import com.inso.Ecommerce.service.ProductService;
 import com.inso.Ecommerce.service.SellService;
 import com.inso.Ecommerce.utilities.SessionManager;
+import com.inso.Ecommerce.wrappers.ProductWrapper;
 
 
 @RestController
@@ -65,18 +66,40 @@ public class SellController {
 		if(admin != null){
 			List<Sell> sells = service.findAll();
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("customer", "date", "state")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "customer", "date", "state", "products")));
+			/*mappedSells.setFilters(new SimpleFilterProvider().addFilter(ProductSell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("product", "cuantity")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "img")));
+			*/
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}	
 		Customer customer = cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(customer != null){
 			List<Sell> sells = customer.getSells(); 
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state", "products")));
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
+	
+	
+	/**
+	 * Only for admins
+	 * @param state
+	 * return the sells that correspond with the given state
+	 */
+	@GetMapping("/{state}")
+	public ResponseEntity<Object> getSellsByState(@PathVariable("state") int state, HttpServletRequest request){
+		Administrator admin = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(admin != null) {
+			List<Sell> sells = service.findByState(state);
+			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "date", "state", "products")));
+			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+	
 	
 	/**
 	 * Create a new sell
@@ -85,15 +108,13 @@ public class SellController {
 	 * @return HTTP 201 if all was okey
 	 */
 	@PostMapping("/")
-	public ResponseEntity<Object> create(@Valid @RequestBody List<ProductSellBean> products, HttpServletRequest request){
+	public ResponseEntity<Object> create(@Valid @RequestBody ProductWrapper products, HttpServletRequest request){
 		Customer cust= cService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(cust == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		Sell sell = new Sell(Sell.State.RECEIVED, new Date(), cust);
 		service.save(sell);
-		Iterator<ProductSellBean> it = products.iterator();
-		while(it.hasNext()) {
-			ProductSellBean aux = it.next();
-			psService.save(new ProductSell(aux.getCantidad(), pService.findById(aux.getProductId()), sell));
+		for(ProductSellBean proc: products.getProducts()) {
+			psService.save(new ProductSell(proc.getCantidad(), pService.findById(proc.getProductId()), sell));
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
@@ -111,6 +132,7 @@ public class SellController {
 		Sell rSell = service.findById(sell.getId());
 		if(rSell.getState() == sell.getState()) return new ResponseEntity<>(HttpStatus.OK);
 		rSell.setState(sell.getState());
+		service.save(rSell);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

@@ -1,0 +1,72 @@
+/*
+ * Comun
+ */
+header{
+	background-image: url('/images/book.jpg'); 
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.moving-clouds {
+	background-image: url('/PaperKit/assets/img/clouds.png');
+}
+
+section .form-group {
+	text-align: left;
+}
+/*
+ * loginSection
+ */
+section#loginSection{
+	text-align : center;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	background-image: url('/images/library.jpg'); 
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}	
+
+section#loginSection > h2 {
+	color: white;
+}
+section#loginSection > form {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	width: 40%;
+}
+
+section#loginSection > form > input {
+	margin-bottom : 20px;
+}
+
+/*
+ * Registro
+ */
+ section#registerSection {
+	text-align : center;
+	padding-top: 60px;
+	padding-bottom: 60px;
+	background-image: url('/images/library2.jpg'); 
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}	
+
+section#registerSection > h2 {
+	color: white;
+}
+section#registerSection > form {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	width: 40%;
+}
+
+section#registerSection > form > input {
+	margin-bottom : 20px;
+}
+ 

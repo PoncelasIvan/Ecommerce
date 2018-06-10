@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.inso.Ecommerce.beans.CustomerDataBean;
+import com.inso.Ecommerce.beans.PasswordBean;
+import com.inso.Ecommerce.beans.LoginBean;
 import com.inso.Ecommerce.model.Customer;
 import com.inso.Ecommerce.service.CustomerService;
 import com.inso.Ecommerce.utilities.SessionManager;
@@ -61,13 +64,13 @@ public class CustomerController {
 	} 
 	
 	/**
-	 * Update the data of the current customer
-	 * @param cust Customer with the new data
+	 * Update the personal data of the current customer
+	 * @param cust CustomerDataBean with the new data
 	 * @param request HTTP current request
 	 * @return HTTP 200 if all was okey
 	 */
 	@PutMapping("/")
-	public ResponseEntity<Object> updateCustomer(@Valid @RequestBody Customer cust, HttpServletRequest request) {	
+	public ResponseEntity<Object> updateCustomer(@Valid @RequestBody CustomerDataBean cust, HttpServletRequest request) {	
 		Customer rCust;
 		if((rCust = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
 			SessionManager.getInstance().delete(request.getSession());
@@ -86,12 +89,35 @@ public class CustomerController {
 					return new ResponseEntity<>(HttpStatus.CONFLICT);	
 				rCust.setName(cust.getName());
 			}
-			if(cust.getPassword() != null && !(cust.getPassword().isEmpty())) rCust.setPasswordHashed(cust.getPassword());
 			service.save(rCust);
 			SessionManager.getInstance().setSessionEmail(request.getSession(), cust.getEmail());
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
-	}	
+	}
+	
+	/**
+	 * Update the password of the current customer
+	 * @param cust CustomerPassBean with the new password
+	 * @param request HTTP current request
+	 * @return HTTP 200 if all was okey
+	 */
+	@PutMapping("/password")
+	public ResponseEntity<Object> updateCustomerPass(@Valid @RequestBody PasswordBean cust, HttpServletRequest request){
+		Customer rCust;
+		if((rCust = service.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()))) == null) {
+			SessionManager.getInstance().delete(request.getSession());
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
+		}
+		String old = org.apache.commons.codec.digest.DigestUtils.sha256Hex(cust.getOldPassword());
+		if(!rCust.getPassword().equals(old)) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
+		if(cust.getNewPassword() == null || "".equals(cust.getNewPassword())) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				
+		rCust.setPassword(cust.getNewPassword());			
+		service.save(rCust);
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
 	
 	/**
 	 * Delete the current customer
@@ -112,8 +138,9 @@ public class CustomerController {
 	 * @return HTTP 200 if all was OKEY
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@Valid @RequestBody Customer cust, HttpServletRequest request) {
-		Customer rCust = cust.getEmail() != null ? service.findByEmail(cust.getEmail()) : service.findByName(cust.getName());
+	public ResponseEntity<Object> login(@Valid @RequestBody LoginBean cust, HttpServletRequest request) {
+		Customer rCust = service.findByEmail(cust.getUser());
+		if(rCust == null) rCust = service.findByName(cust.getUser());
 		if(rCust == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);	
 		if(rCust.getPassword().equals(cust.getPassword())) {
 			SessionManager.getInstance().setSessionEmail(request.getSession(), rCust.getEmail());

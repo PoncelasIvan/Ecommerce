@@ -1,9 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
-		<title>En costruccion</title>
+		<meta charset="UTF-8" />
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+		<link rel="stylesheet" href="lib/PaperKit/assets/css/paper-kit.css">
+		<link rel="stylesheet" href="css/index.css">
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha384-ch1nZWLCNJ31V+4aC8U2svT7i40Ru+O8WHeLF4Mvq4aS7VD5ciODxwuOCdkIsX86" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha384-Si3HKTyQYGU+NC4aAF3ThcOSvK+ZQiyEKlYyfjiIFKMqsnCmfHjGa1VK1kYP9UdS" crossorigin="anonymous"></script>
+		<script src="lib/PaperKit/assets/js/paper-kit.js"></script>
+		<script src="lib/PaperKit/assets/js/bootstrap-switch.min.js"></script>
+		<script src="js/util/Alerts.js"></script>
+		<script src="js/util/API.js"></script>
+		<script src="js/index.js"></script>
 	</head>
-	</body>
-		<h1>Frontal</h1>
+	<body>
+		<nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="150">
+        	<div class="container">
+            	<div class="navbar-translate">
+            		<button type="button" class="btn btn-outline-success btn-lg" id="shop">Tienda <i class="fas fa-shopping-cart"></i></button>
+            		
+                	<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#nTog" aria-expanded="false" aria-label="Toggle navigation">
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                	</button>
+            	</div>
+            	<div class="collapse navbar-collapse" id="nTog">
+	                <ul class="navbar-nav ml-auto">
+	                    <li class="nav-item"><button type="button" class="btn btn-outline-info btn-lg" data-scroll-to="#loginSection"><i class="fas fa-sign-in-alt"></i>Login</button>
+	                    <li class="nav-item"><button type="button" class="btn btn-outline-danger btn-lg" data-scroll-to="#registerSection">Registro</button>
+	                </ul>
+            	</div>
+        	</div>
+    	</nav>
+    	<div class="wrapper">
+	        <header class="page-header section-dark">
+	            <div class="filter"></div>
+	    		<div class="content-center">
+	    			<div class="container">
+	    				<div class="title-brand">
+	    					<h1 class="presentation-title">Bookmerce</h1>
+	    				</div>
+	    				<h2 class="presentation-subtitle text-center">La tienda de libros mas completa</h2>
+	    			</div>
+	    		</div>
+	            <div class="moving-clouds"></div>
+	    	</header>
+	    	
+	    	<section class="container-fluid" id="loginSection">
+	    		<h2>Login</h2>
+	    		<form class="container-fluid ">
+	    			<div class="form-group">
+	    				<span class="label label-success">Nombre o email</span>
+	    				<input type="text" class="form-control" placeholder="Nombre o email">
+	          		</div>
+	    			<div class="form-group">
+	    				<span class="label label-success">Contraseña</span>
+						<input type="password" class="form-control" placeholder="Contraseña">
+					</div>
+					<button type="button" class="btn btn-info btn-round btn-lg">Entrar</button>
+	    		</form>
+	    	</section>
+	    	
+	    	<section class="container-fluid" id="registerSection">
+	    		<h2>Registro</h2>
+	    		<form class="container-fluid ">
+	    			<div class="form-group">
+	    				<span class="label label-success">Nombre de usuario</span>
+						<input type="text" class="form-control" placeholder="Nombre">
+					</div>
+					<div class="form-group">
+	    				<span class="label label-success">Email</span>
+						<input type="text" class="form-control" placeholder="Email">
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Contraseña</span>
+						<input type="password" class="form-control" placeholder="Contraseña">
+					</div>
+					<div class="form-group">
+						<span class="label label-success">Repita la contraseña</span>
+						<input type="password" class="form-control" placeholder="Repita su contraseña">
+					</div>
+					<button type="button" class="btn btn-danger btn-round btn-lg">Registrarse</button>
+	    		</form>
+	    	</section>
+	    </div>
 	</body>
 </html>

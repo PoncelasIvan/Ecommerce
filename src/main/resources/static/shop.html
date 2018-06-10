@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha384-R334r6kryDNB/GWs2kfB6blAOyWPCxjdHSww/mo7fel+o5TM/AOobJ0QpGRXSDh4" crossorigin="anonymous">
+		<link rel="stylesheet" href="lib/PaperKit/assets/css/paper-kit.css">
+		<link rel="stylesheet" href="css/shop.css">
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha384-ch1nZWLCNJ31V+4aC8U2svT7i40Ru+O8WHeLF4Mvq4aS7VD5ciODxwuOCdkIsX86" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha384-Si3HKTyQYGU+NC4aAF3ThcOSvK+ZQiyEKlYyfjiIFKMqsnCmfHjGa1VK1kYP9UdS" crossorigin="anonymous"></script>
+		<script src="lib/PaperKit/assets/js/paper-kit.js"></script>
+		<script src="lib/PaperKit/assets/js/bootstrap-switch.min.js"></script>
+		<script src="js/util/API.js"></script>
+		<script src="js/util/Alerts.js"></script>
+		<script src="js/shop.js"></script>
+		<script src="js/model/Product.js"></script>
+		<script src="js/model/Sell.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-md fixed-top">
+        	<div class="container">
+        		
+            	<div class="navbar-translate">
+            		<h5 class="navbar-brand">Tienda</h5>
+                	<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#nTog" aria-expanded="false" aria-label="Toggle navigation">
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                    	<span class="navbar-toggler-bar"></span>
+                	</button>                	
+            	</div>
+            	<div class="collapse navbar-collapse" id="nTog">
+	                <ul class="navbar-nav ml-auto"></ul>
+            	</div>
+        	</div>
+    	</nav>
+    	
+    	<!-- All products section -->
+    	<div class="wrapper" id="products">
+    		<section class="container-fluid">
+	    		<div class="row"></div>
+    		</section>
+    	</div>
+    	
+    	<!-- Detailed product section -->
+		<div class="wrapper" id="product">
+    		<section class="container-fluid">
+    			<section class="text-center"></section>
+    		</section>
+    	</div> 	
+    	
+    	<!-- Administrator section -->
+    	<div class="wrapper" id="administrator">
+    		<section class="container-fluid">
+	    		<div class="nav-tabs-navigation">
+    				<div class="nav-tabs-wrapper">
+				        <ul class="nav nav-tabs" role="tablist">
+				            <li class="nav-item">
+				                <a class="nav-link active" data-toggle="tab" href="#administrator-request" role="tab">Pedidos</a>
+				            </li>
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#administrator-dash" role="tab">Administracion</a>
+				            </li>
+        				</ul>
+				    </div>
+				</div>
+				<!-- Tab panes -->
+				<div class="tab-content text-center">
+				    <div class="container tab-pane active" id="administrator-request" role="tabpanel">
+						<ul class="nav nav-pills nav-pills-info" style="justify-content: center;">
+						    <li class="nav-item" data-action="administrator-request-wait">
+						        <a class="nav-link active" data-toggle="tab" href="#administrator-request-wait">Pendientes</a>
+						    </li>
+						    <li class="nav-item" data-action="administrator-request-incoming">
+						        <a class="nav-link" data-toggle="tab" href="#administrator-request-incoming">En proceso</a>
+						    </li>
+						    <li class="nav-item" data-action="administrator-request-done">
+						        <a class="nav-link" data-toggle="tab" href="#administrator-request-done">Completados</a>
+						    </li>
+						</ul>
+						<!-- Pill panes -->
+						<div class="tab-content">
+						    <div class="tab-pane active" id="administrator-request-wait" role="tabpanel"></div>
+						    <div class="tab-pane" id="administrator-request-incoming" role="tabpanel"></div>
+						    <div class="tab-pane" id="administrator-request-done" role="tabpanel"></div>
+						</div>
+				    </div>
+				    
+				    <div class="tab-pane" id="administrator-dash" role="tabpanel">
+				    	<div class="container">
+				    		<div class="row">
+				    			<div class="col-lg-3 col-md-6">
+				                	<div class="fixed-section">
+				                    	<ul>
+				                    		<li><p data-target="#administrator-profile-new-admin">Crear nuevo admin</p></li>
+				                    		<li><p data-target="#administrator-profile-new-product">Crear nuevo producto</p></li>
+				                        	<li><p data-target="#administrator-profile-edit-data">Datos personales</p></li>
+				                        	<li><p data-target="#administrator-profile-edit-password">Cambiar contraseña</p></li>
+				                    	</ul>
+				                	</div>
+				            	</div>
+				            	<div class="col-lg-8 col-md-12">
+				            		<div id="administrator-profile-new-admin">
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Nombre</span>
+												<input type="text" class="form-control" placeholder="Nombre">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Email</span>
+												<input type="text" class="form-control" placeholder="Email">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Contraseña</span>
+												<input type="password" class="form-control" placeholder="Contraseña">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Repita la contraseña</span>
+												<input type="password" class="form-control" placeholder="Repita la contraseña">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-create-admin">Crear Administrador</button>
+							    		</form>
+				            		</div>
+				            		
+				            		<div id="administrator-profile-new-product">
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Título</span>
+												<input type="text" class="form-control" placeholder="Título">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Autor</span>
+												<input type="text" class="form-control" placeholder="Autor">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Sinópsis</span>
+												<input type="text" class="form-control" placeholder="Sinópsis">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Precio</span>
+												<input type="text" class="form-control" placeholder="Precio">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Stock</span>
+												<input type="text" class="form-control" placeholder="Stock">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Formato</span>
+												<input type="radio" class="form-control" name="format" value="Tapa Dura">Tapa Dura
+												<input type="radio" class="form-control" name="format" value="Tapa Blanda">Tapa Blanda
+												<input type="radio" class="form-control" name="format" value="Formato Bolsillo">Formato Bolsillo
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-create-product">Crear Producto</button>
+							    		</form>
+				            		</div>
+				            		
+				            		<div id="administrator-profile-edit-data">
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">Nombre de usuario</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">email</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<button type="button" class="btn btn-danger btn-round btn-lg" data-action="administrator-change-data">Actualizar</button>
+				            		</div>
+				            		
+				            		<div id="administrator-profile-edit-password">
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Contraseña actual</span>
+												<input type="password" class="form-control" placeholder="Contraseña actual">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Nueva contraseña</span>
+												<input type="password" class="form-control" placeholder="Nueva contraseña">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Repita la contraseña</span>
+												<input type="password" class="form-control" placeholder="Repita la contraseña">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="administrator-change-password">Actualizar</button>
+							    		</form>
+				            		</div>
+				            		
+	    						</div>
+				    		</div>
+				    	</div>
+  	
+				    </div>
+				</div>
+    		</section>
+    	</div>
+    	
+    	<!-- Customer section -->
+    	<div class="wrapper" id="customer">
+    		<section class="container-fluid">
+	    		<div class="nav-tabs-navigation">
+    				<div class="nav-tabs-wrapper">
+				        <ul class="nav nav-tabs" role="tablist">
+				            <li class="nav-item">
+				                <a class="nav-link active" data-toggle="tab" href="#customer-history" role="tab">Historial de compras</a>
+				            </li>
+				            <!-- <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#customer-sCart" role="tab">Carrito de la compra</a>
+				            </li>-->
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="tab" href="#customer-profile" role="tab">Perfil</a>
+				            </li>
+        				</ul>
+				    </div>
+				</div>
+				<div class="tab-content text-center">
+				    <div class="tab-pane active" id="customer-history" role="tabpanel">
+						<ul class="list-group list-group-flush"></ul>
+				    </div>
+				    <!--<div class="tab-pane" id="customer-sCart" role="tabpanel">
+				    	<div class="row"></div>
+				    </div>-->
+				    <div class="tab-pane" id="customer-profile" role="tabpanel">
+				    	<div class="container">
+				    		<div class="row">
+				    			<div class="col-lg-3 col-md-6">
+				                	<div class="fixed-section">
+				                    	<ul>
+				                        	<li><p data-target="#customer-profile-edit-data">Datos personales</p></li>
+				                        	<li><p data-target="#customer-profile-edit-password">Contraseña</p></li>
+				                    	</ul>
+				                	</div>
+				            	</div>
+				            	<div class="col-lg-8 col-md-12">
+				            		<div id="customer-profile-edit-data">
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">Nombre de usuario</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<div class="row">			
+				            				<div class="col-sm">
+				            					<span class="label label-success">email</span>
+				            				</div>
+				            				<div class="col-sm">
+				            					<p contenteditable="true"></p>
+				            				</div>
+				            			</div>
+				            			<button type="button" class="btn btn-danger btn-round btn-lg" data-action="customer-change-data">Actualizar</button>
+				            		</div>
+				            		
+				            		<div class="container" id="customer-profile-edit-password">	            			
+				            			<form class="container-fluid ">
+							    			<div class="form-group">
+							    				<span class="label label-success">Contraseña actual</span>
+												<input type="password" class="form-control" placeholder="Contraseña actual">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Nueva contraseña</span>
+												<input type="password" class="form-control" placeholder="Nueva contraseña">
+											</div>
+											<div class="form-group">
+							    				<span class="label label-success">Repita la contraseña</span>
+												<input type="password" class="form-control" placeholder="Repita la contraseña">
+											</div>
+											<button type="button" class="btn btn-info btn-round btn-lg" data-action="customer-change-password">Actualizar</button>
+							    		</form>
+				            		</div>
+	    						</div>
+				    		</div>
+				    	</div>
+				    </div>
+				</div>
+    		</section>
+    	</div>   	
+	</body>
+</html>

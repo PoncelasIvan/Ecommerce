@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inso.Ecommerce.model.Sell;
+import com.inso.Ecommerce.model.Sell.State;
 import com.inso.Ecommerce.repository.SellRepository;
 
 @Service
@@ -29,6 +30,26 @@ public class SellServiceImpl implements SellService{
 	public Sell findById(int id) {
 		Optional<Sell> sell = repository.findById(id);
 		return sell.isPresent() ? sell.get() : null;
+	}
+	
+	@Override
+	public List<Sell> findByState(int state){
+		State st;
+		switch(state) {
+		case 0:
+			st = State.RECEIVED;
+			break;
+		case 1:
+			st = State.IN_PROGRESS;
+			break;
+		case 2:
+			st = State.COMPLETED;
+			break;
+		default:
+			st = null;
+			break;
+		}
+		return repository.findByState(st);
 	}
 
 	@Override
