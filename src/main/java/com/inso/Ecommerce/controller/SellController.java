@@ -94,7 +94,7 @@ public class SellController {
 		if(admin != null) {
 			List<Sell> sells = service.findByState(state);
 			MappingJacksonValue mappedSells = new MappingJacksonValue(sells);
-			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("date", "state", "products")));
+			mappedSells.setFilters(new SimpleFilterProvider().addFilter(Sell.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "date", "state", "products")));
 			return new ResponseEntity<>(mappedSells, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -132,6 +132,7 @@ public class SellController {
 		Sell rSell = service.findById(sell.getId());
 		if(rSell.getState() == sell.getState()) return new ResponseEntity<>(HttpStatus.OK);
 		rSell.setState(sell.getState());
+		service.save(rSell);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

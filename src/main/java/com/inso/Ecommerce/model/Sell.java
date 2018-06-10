@@ -41,7 +41,6 @@ public class Sell {
 	@NotNull
 	private State state;
 
-	@NotNull 
 	private Date date;
 	
 	@ManyToOne

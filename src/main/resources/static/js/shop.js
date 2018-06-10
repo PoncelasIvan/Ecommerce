@@ -308,8 +308,38 @@ $(document).ready(function(){
                 break;
             case 'administrator-update-status':
                 let sellId = $(this).attr('data-sell-id');
-                let sellStatus = $(this).attr('data-sell-status');
-                alert("Cambiar venta " + sellId + " a estado " + sellStatus);
+                let sellStatus;
+                switch($(this).attr('data-sell-status')){
+                    case  'IN_PROGRESS':
+                        sellStatus = 0;
+                        break;
+                    case 'RECEIVED' :
+                        sellStatus = 1;
+                        break;
+                    case 'COMPLETED':
+                        sellStatus = 2;
+                        break;
+                }
+                $.ajax({
+                    type: API.SELL_UPDATE.type,
+                    url: API.SELL_UPDATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify({
+                        'id' : sellId,
+                        'state' : sellStatus
+                    }),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                
+                                break; 
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;     
+                        }
+                    }
+                });
+                
                 break;
 
             case 'administrator-change-password':
@@ -427,16 +457,8 @@ $(document).ready(function(){
                         switch (jqXHR.status) {
                             case 200:
                                 if(!json) return; 
-                                $('#administrator-request-wait').children().remove();
-
-                                for(var e = 0; e < 10; e++){
-                                    for(i in json){
-                                        // We must retrieve this id
-                                        json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
-                                        $('#administrator-request-wait').append(new Sell(json[i]).view());
-                                        
-                                    }
-                                }
+                                $('#administrator-request-wait').children().remove(); 
+                                for(i in json) $('#administrator-request-wait').append(new Sell(json[i]).view());
                                 break;
                                  
                              default:
@@ -457,15 +479,7 @@ $(document).ready(function(){
                            case 200:
                                if(!json) return; 
                                $('#administrator-request-incoming').children().remove();
-
-                               for(var e = 0; e < 10; e++){
-                                   for(i in json){
-                                       // We must retrieve this id
-                                       json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
-                                       $('#administrator-request-incoming').append(new Sell(json[i]).view());
-                                       
-                                   }
-                               }
+                               for(i in json) $('#administrator-request-incoming').append(new Sell(json[i]).view());
                                break;
                                 
                             default:
@@ -486,15 +500,7 @@ $(document).ready(function(){
                             case 200:
                                 if(!json) return; 
                                 $('#administrator-request-done').children().remove();
-
-                                for(var e = 0; e < 10; e++){
-                                    for(i in json){
-                                        // We must retrieve this id
-                                        json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
-                                        $('#administrator-request-done').append(new Sell(json[i]).view());
-                                        
-                                    }
-                                }
+                                for(i in json) $('#administrator-request-done').append(new Sell(json[i]).view());
                                 break;
                                  
                              default:
