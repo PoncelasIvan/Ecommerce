@@ -94,7 +94,7 @@ public class ProductController {
 	 * @return HTTP 201 if all was okey
 	 */
 	@PostMapping("/")
-	public ResponseEntity<Object> create(@Valid @RequestBody Product product, HttpServletRequest request){
+	public ResponseEntity<Object> create(@RequestBody Product product, HttpServletRequest request){
 		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
 		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);	
 		product.setDate(new Date());
@@ -103,7 +103,24 @@ public class ProductController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	/**
+	@PutMapping("/")
+	public ResponseEntity<Object> update(@Valid @RequestBody Product product, HttpServletRequest request){
+		Administrator administrator = aService.findByEmail(SessionManager.getInstance().getSessionEmail(request.getSession()));
+		if(administrator == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);	
+		Product aux = service.findById(product.getId());
+		if(aux == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		aux.setAuthor(product.getAuthor());
+		aux.setFormat(product.getFormat());
+		aux.setPrice(product.getPrice());
+		aux.setStock(product.getStock());
+		aux.setSynopsis(product.getSynopsis());
+		aux.setTitle(product.getTitle());
+		service.save(aux);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	/**, 
 	 * Return all data from a product
 	 * @param id Id of a products
 	 * @param request HTTP current request
@@ -119,11 +136,7 @@ public class ProductController {
 		mappedProduct.setFilters(new SimpleFilterProvider().addFilter(Product.FILTER, SimpleBeanPropertyFilter.filterOutAllExcept("id", "title", "author", "synopsis", "format", "price", "stock", "imgs")));
 		return new ResponseEntity<>(mappedProduct, HttpStatus.OK);
 	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Object> updateProduct(@PathVariable("id") Integer id, HttpServletRequest request){
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+
 	
 	/**
 	 * Delete a product

@@ -101,6 +101,10 @@ var API = {
         	type : 'GET',
         	url : '/api/product/'
         },
+        PRODUCT_UPDATE : {
+            type : 'PUT',
+            url : '/api/product/'
+        },
         PRODUCT_DELETE : {
         	type : 'DELETE',
         	url : '/api/product/' //Requiere parametro {id}
@@ -118,7 +122,7 @@ var API = {
         	url : '/api/product/search/'
         },
         
-        //Sells(to be done)
+        //Sells
         SELL_GET : {
         	type : 'GET',
         	url : '/api/sell/'

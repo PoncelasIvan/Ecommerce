@@ -285,11 +285,26 @@ $(document).ready(function(){
                 let product = new Object();
                 product.id = $(this).attr('data-product-id');
                 product.title = dad.children('h1').text();
-                product.description = $(par[0]).text();
-                product.autor = $(par[1]).text();
-                product.formato = $(par[2]).text();
-                product.price = $(par[3]).text();
-                alert("Implementar guardado y enviar product");
+                product.synopsis = $(par[1]).text();
+                product.author = $(par[2]).text();
+                product.format = $(par[3]).text();
+                product.price = $(par[4]).text();
+                $.ajax({
+                    type: API.PRODUCT_UPDATE.type,
+                    url: API.PRODUCT_UPDATE.url,
+                    contentType : "application/json; charset=utf-8",
+                    data : JSON.stringify(product),
+                    complete: function(jqXHR, textStatus) {
+                        switch (jqXHR.status) {
+                            case 200:
+                                
+                                break; 
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;     
+                        }
+                    }
+                });
                 break;
             case 'administrator-update-status':
                 let sellId = $(this).attr('data-sell-id');
