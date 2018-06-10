@@ -73,11 +73,6 @@ $(document).ready(function(){
                     		$($('#administrator-profile-edit-data p')[0]).text(json.name);
                     		$($('#administrator-profile-edit-data p')[1]).text(json.email);
                     		//Precarga de productos
-                    		/*
-                    		 * Precargar solo productos en camino
-                    		 * ??????????????????
-                    		 * Pintar la lista añadiento sellview
-                    		 */
                     		 $.ajax({
                     		     type: API.SELL_GET_BY_STATE.type,
                     		     url: API.SELL_GET_BY_STATE.url + '1', // In progress
@@ -301,9 +296,7 @@ $(document).ready(function(){
                 let sellStatus = $(this).attr('data-sell-status');
                 alert("Cambiar venta " + sellId + " a estado " + sellStatus);
                 break;
-            /**
-             * Cosas de Dani
-             */
+
             case 'administrator-change-password':
             	data = $(this).parent().find('input');
                 pass = $(data[0]).val();
@@ -410,7 +403,92 @@ $(document).ready(function(){
                 });
                     
             	break;
-            
+            case 'administrator-request-wait':
+                $.ajax({
+                    type: API.SELL_GET_BY_STATE.type,
+                    url: API.SELL_GET_BY_STATE.url + '0', 
+                    complete: function(jqXHR, textStatus) {
+                        let json = jQuery.parseJSON(jqXHR.responseText);
+                        switch (jqXHR.status) {
+                            case 200:
+                                if(!json) return; 
+                                $('#administrator-request-wait').children().remove();
+
+                                for(var e = 0; e < 10; e++){
+                                    for(i in json){
+                                        // We must retrieve this id
+                                        json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
+                                        $('#administrator-request-wait').append(new Sell(json[i]).view());
+                                        
+                                    }
+                                }
+                                break;
+                                 
+                             default:
+                                 new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                 break;
+                        }
+                    }
+                 });  
+               
+                break;
+           case 'administrator-request-incoming':
+               $.ajax({
+                   type: API.SELL_GET_BY_STATE.type,
+                   url: API.SELL_GET_BY_STATE.url + '1', // In progress
+                   complete: function(jqXHR, textStatus) {
+                       let json = jQuery.parseJSON(jqXHR.responseText);
+                       switch (jqXHR.status) {
+                           case 200:
+                               if(!json) return; 
+                               $('#administrator-request-incoming').children().remove();
+
+                               for(var e = 0; e < 10; e++){
+                                   for(i in json){
+                                       // We must retrieve this id
+                                       json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
+                                       $('#administrator-request-incoming').append(new Sell(json[i]).view());
+                                       
+                                   }
+                               }
+                               break;
+                                
+                            default:
+                                new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                break;
+                       }
+                   }
+                });  
+              
+              break;
+            case 'administrator-request-done':
+                $.ajax({
+                    type: API.SELL_GET_BY_STATE.type,
+                    url: API.SELL_GET_BY_STATE.url + '2', // In progress
+                    complete: function(jqXHR, textStatus) {
+                        let json = jQuery.parseJSON(jqXHR.responseText);
+                        switch (jqXHR.status) {
+                            case 200:
+                                if(!json) return; 
+                                $('#administrator-request-done').children().remove();
+
+                                for(var e = 0; e < 10; e++){
+                                    for(i in json){
+                                        // We must retrieve this id
+                                        json[i].id = "" + Math.floor(Math.random() * Math.floor(1000000));
+                                        $('#administrator-request-done').append(new Sell(json[i]).view());
+                                        
+                                    }
+                                }
+                                break;
+                                 
+                             default:
+                                 new Toast('Error', 'Servicio no disponible en este momento. Intentelo de nuevo mas tarde', 'error', 'top-left').show();
+                                 break;
+                        }
+                    }
+                 });  
+                break;
             case 'administrator-create-product':
             	data = $(this).parent().find('input');
                 title = $(data[0]).val();
